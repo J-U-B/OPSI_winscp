@@ -1,0 +1,38 @@
+; setup.ins WinSCP
+; Installer-Typ: Inno Setup with custom inf file
+; Switches can be found under http://www.jrsoftware.org/ishelp/index.php?topic=setupcmdline
+;======================================================================
+[Initial]
+;======================================================================
+; Borrmann, 2014-08-20
+setLogLevel=6
+; Log Errors in Logfile but don't abort:
+ExitOnError=false 
+; Show syntax errors in the script:
+ScriptErrorMessages=on
+; Dont trace step by step through the script:
+TraceMode=off 
+; Let started programs run in front of the winst window
+StayOnTop=false  
+
+;======================================================================
+[Actions]
+;======================================================================
+include_insert "%ScriptPath%\variables.ins"
+include_append "%ScriptPath%\exitcode_inno.ins"
+
+requiredWinstVersion >= "4.11.3"
+Message=Uninstalling WinSCP
+
+Set $ProductId$       = "winscp"
+Set $ProductName$     = "WinSCP"
+
+Set $LogDir$          = "%SystemDrive%\tmp"
+Set $UninstallLog$    = $LogDir$ + "\"+$ProductId$+"_uninstall.log"
+
+ShowBitmap "%ScriptPath%\" + $ProductId$ + "_uninstall.png" $ProductName$
+
+if FileExists("%ScriptPath%\delsub.ins")
+		comment  "Starting uninstall sub section"
+		sub "%ScriptPath%\delsub.ins"	
+	endif

@@ -1,0 +1,12 @@
+; delsub.ins WinSCP
+; Borrmann, 2014-08-20
+
+; WinSCP 5.5.4
+set $DisplayName$ = GetRegistryStringValue32("[HKLM\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\winscp3_is1] UninstallString")
+if not ($DisplayName$ = "")
+	Message=Uninstalling WinSCP
+	Winbatch_Uninstall
+endif
+
+[Winbatch_Uninstall]
+$DisplayName$ /VERYSILENT /NORESTART /LOG="$UninstallLog$"
