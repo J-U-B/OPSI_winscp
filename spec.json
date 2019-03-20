@@ -1,0 +1,33 @@
+{  
+	"_": "=== OPSI package variables ===",
+	"O_PKG_VER"         : "1",
+	"O_SOFTWARE_VER"    : "5.13.9",
+	"O_SOFTWARE"        : "WinSCP",
+	"O_SOFTWARE_WEBSITE": "https://winscp.net",
+	"O_SOFTWARE_CHANGES": "https://winscp.net/eng/docs/history#5.13.9",
+	"O_RELEASE_DATE"    : "{{M_TODAY}}",
+	"O_INST_LOG"        : "/tmp/{{M_ORGPREFIX}}winscp__opsi_package_install.log",
+	
+	"_":"=== This script package supports both installers INNO (exe) and MSI ===",
+	"_":"=== however: the this software is still only available as INNO package",
+	"_":"=== so please don't change this value: ",
+	"O_USE_INSTALLER"	: "INNO",
+	
+	"STAGE"             : "{{M_STAGE}}",
+	"TESTPREFIX"	    : "{{M_TESTPREFIX}}",
+	"ORGPREFIX"         : "{{M_ORGPREFIX}}",
+	"ORGNAME"           : "{{M_ORGNAME}}",
+
+	"_":"=== conditions ===",
+	"ifdef_auto_download"           :true,
+	
+	"ifdef_testing"                 :{{M_TESTING}},	
+	"ifdef_allinc"                  :{{M_ALLINC}},	
+	"ifdef_keepfiles"				:{{M_KEEPFILES}},
+	
+	"_":"=== some tuning ===",
+	"DEFAULT_TESTING_LOGLEVEL" : "7",
+	"DEFAULT_RELEASE_LOGLEVEL" : "5",
+	
+	"_":""
+}

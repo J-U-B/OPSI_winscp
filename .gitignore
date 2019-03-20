@@ -3,4 +3,8 @@
 *.md5
 *.ins~
 *~
-*.exe
+*.log
+BUILD/
+PACKAGES/
+DOWNLOAD/
+product_downloader.sh
