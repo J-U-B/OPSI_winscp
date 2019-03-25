@@ -1,7 +1,0 @@
-[Setup]
-Lang=en
-Group=WinSCP
-NoIcons=0
-SetupType=custom
-Components=main,transl,transl\eng
-Tasks=

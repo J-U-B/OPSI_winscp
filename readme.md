@@ -133,7 +133,7 @@ entfaellt dieser Abschnitt.
 Je nach Art des erstellten Paketes erfolgt bei der Installation im Depot durch 
 das <code>postinst</code>-Script der Download der Software vom Hersteller (Windows, 32 und 64 Bit).  
 Ein manueller Download sollte dann nicht erforderlich sein. 
-Auf dem Depot-Server ist **wget** erforderlich.
+Auf dem Depot-Server ist **curl** bzw. **wget** erforderlich.
 
 Das Gesamtvolumen der herunterzuladenden Dateien betraegt ca. **10 MByte**.
 

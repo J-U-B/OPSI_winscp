@@ -2,7 +2,7 @@
 ; setup.ins WinSCP
 ; Installer type: INNO/MSI
 ; 
-; J. Boettge <boettge@mpi-halle.mpg.de>  2019-03-20 12:53:45 +0100
+; J. Boettge <boettge@mpi-halle.mpg.de>  2019-03-25 09:59:26 +0100
 ;======================================================================
 
 ;======================================================================
@@ -77,11 +77,12 @@ else
 		isFatalError
 	endif
 	
-	; the MSI installer creates a desktop link - delete it just in case
-	if ($InstallerType$ = "MSI")
+	;; the MSI installer creates a desktop link - delete it just in case
+	;if ($InstallerType$ = "MSI")
+		; wait for installer to finish work
 		sleepseconds 1
 		LinkFolder_RemoveDesktopLink
-	endif
+	;endif
 	
 	;=== create desktop link if requested
 	if ($pr_DesktopLink$ = "true")
