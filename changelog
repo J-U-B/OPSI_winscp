@@ -1,3 +1,8 @@
+winscp 5.15-2:
+	* product update ==> 5.15
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2019-03-20 11:10:46 +0100
+
+
 winscp 5.13.9-2:
 	* complete redesign for MPIMSP (based on MPIMSP template by J. Boettge)
 	-- J. Boettge <boettge@mpi-halle.mpg.de>  2019-03-20 11:10:46 +0100
