@@ -93,6 +93,13 @@ else
 endif
 
 Set $sw_arch$ = GetProductProperty("install_architecture","sysnative")
+{{#ifdef_property_arch}}
+Set $sw_arch$ = GetProductProperty("install_architecture","sysnative")
+{{/ifdef_property_arch}}
+{{^ifdef_property_arch}}
+Set $sw_arch$ = "32 bit"
+{{/ifdef_property_arch}}
+
 Set $sw_arch$ = takeString(0, splitString($sw_arch$, " "))
 ; Set $sw_arch$		  = "32"
 
