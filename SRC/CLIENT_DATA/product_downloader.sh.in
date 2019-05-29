@@ -4,7 +4,7 @@
 # Product: WinSCP
 #
 # Version 1.4
-# Jens Boettge <boettge@mpi-halle.mpg.de>  2019-03-20 11:07:29 +0100
+# Jens Boettge <boettge@mpi-halle.mpg.de>  2019-05-29 18:26:26 +0200
 #=======================================================================
 # link examples:
 #	INNO: (O_DL_EXE_64BIT und O_DL_EXE_32BIT)
@@ -74,7 +74,8 @@ if [ "{{O_USE_INSTALLER}}" = "MSI" ]; then
 elif [ "{{O_USE_INSTALLER}}" = "INNO" ]; then
 	#========== INNO ==============
 	#declare -A URL=( ["32"]="{{O_DL_EXE_32BIT}}" ["64"]="{{O_DL_EXE_64BIT}}")
-	BASE="https://winscp.net/download/WinSCP-${VERSION}-Setup.exe"
+	# BASE="https://winscp.net/download/WinSCP-${VERSION}-Setup.exe"
+	BASE="https://sourceforge.net/projects/winscp/files/WinSCP/${VERSION}/WinSCP-${VERSION}-Setup.exe/download"
 	PKG_FILE="WinSCP-${VERSION}-Setup.exe"
 else
 	echo "Error: unsupported installer" ; 

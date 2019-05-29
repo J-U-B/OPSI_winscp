@@ -1,3 +1,8 @@
+winscp 5.15.2-2:
+	* product update ==> 5.15.2
+	* changed download base URL
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2019-05-29 18:26:44 +0200
+
 winscp 5.15.1-2:
 	* product update ==> 5.15.1
 	* fixed warning for unneded proterty install_architecture
