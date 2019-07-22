@@ -1,6 +1,6 @@
 {{! ========================================================================== }}
 {{!  WinSCP CONTROL                                                            }}
-{{!  J. Boettge <boettge@mpi-halle.mpg.de> 2019-03-20 10:33:02 +0100           }}
+{{!  J. Boettge <boettge@mpi-halle.mpg.de> 2019-07-22 12:13:54 +0200           }}
 {{! ========================================================================== }}
 [Package]
 version: {{O_PKG_VER}}
@@ -11,13 +11,14 @@ incremental: False
 type: localboot
 id: {{TESTPREFIX}}{{ORGPREFIX}}winscp
 name: {{O_SOFTWARE}}
-description: WinSCP is a popular SFTP client and FTP client for Microsoft Windows! Copy file between a local computer and remote servers using FTP, FTPS, SCP, SFTP, WebDAV or S3 file transfer protocols.
- ___
- Web: {{O_SOFTWARE_WEBSITE}}
- Changelog: {{O_SOFTWARE_CHANGES}}
+description: • WinSCP is a popular SFTP client and FTP client for Windows. Supported protocols are FTP, FTPS, SCP, SFTP, WebDAV, S3.
+    • WinSCP ist ein beliebter SFTP-Client und FTP-Client für Windows. Unterstützte Protokolle sind FTP, FTPS, SCP, SFTP, WebDAV, S3.
+    ___
+    Web: {{O_SOFTWARE_WEBSITE}}
+    Changelog: {{O_SOFTWARE_CHANGES}}
 advice: Maintainer: Jens Boettge <boettge@mpi-halle.mpg.de>
- Organization: {{ORGNAME}}
- Release date: {{O_RELEASE_DATE}}
+    Organization: {{ORGNAME}}
+    Release date: {{O_RELEASE_DATE}}
 version: {{O_SOFTWARE_VER}}
 priority: 0
 licenseRequired: False
@@ -36,14 +37,16 @@ name: kill_running
 description: kill running instance (for software on_demand)
 default: False
 
-;[ProductProperty]
-;type: unicode
-;name: install_architecture
-;multivalue: False
-;editable: False
-;description: which architecture (32/64 bit) should be installed
-;values: ["32 bit", "64 bit", "sysnative"]
-;default: ["sysnative"]
+{{#ifdef_property_arch}}
+[ProductProperty]
+type: unicode
+name: install_architecture
+multivalue: False
+editable: False
+description: which architecture (32/64 bit) should be installed
+values: ["32 bit", "64 bit", "sysnative"]
+default: ["sysnative"]
+{{/ifdef_property_arch}}
 
 ;[ProductProperty]
 ;type: unicode
@@ -59,6 +62,15 @@ type: bool
 name: link_desktop
 description: generate or delete Desktop link
 default: False
+
+[ProductProperty]
+type: unicode
+name: silent_option
+multivalue: False
+editable: False
+description: Show (silent) or hide (very silent) progressbar of (un)installer
+values: ["silent", "very silent"]
+default: ["very silent"]
 
 [ProductProperty]
 type: unicode

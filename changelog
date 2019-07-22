@@ -1,3 +1,28 @@
+winscp 5.15.3-3:
+	* product update ==> 5.15.3
+	* pystache: use UTF-8 encoding
+	* Makefile: new default for ALLINC is true
+	* added helpers.opsifunc to v1.4
+	* update status information for other packages providing the same product on depot
+	* deferring action if running instance is found (no success/error, keep action_request unchanged)
+	* added property "silent_option"
+	* added feature: local images (according to guideline)
+	* variable $PathToExe$ (according to guideline)
+	* updated checkinstance.opsiinc (sub_checkinstance_init)
+	* detect testing stage even if package has no matching prefix
+	* for distinction: explicit comment in logs for TESTING / RELEASE package
+	* fixed search registry for uninstall keys on 32 bit systems
+	* for 32 bit compatibility: use %ProgramFiles32Dir% instead of EnvVar("ProgramFiles(x86)")
+	* exitcode_inno.opsiinc rewritten & updated
+	* warning on still existing install directory on uninstall is now comment
+	* adjusted log directory for o4i
+	* adjusted description in control (en/de)
+	* removed unused 7zip form package
+	* added code of conduct
+	* documentation updated
+	* new icon for application configuration
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2019-07-22 15:47:39 +0200
+
 winscp 5.15.2-2:
 	* product update ==> 5.15.2
 	* changed download base URL

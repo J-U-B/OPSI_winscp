@@ -1,8 +1,8 @@
 ############################################################
 # OPSI package Makefile (WinSCP)
-# Version: 2.6
+# Version: 2.6.1
 # Jens Boettge <boettge@mpi-halle.mpg.de>
-# 2019-03-20 12:08:04 +0100
+# 2019-07-22 14:08:30 +0200
 ############################################################
 
 .PHONY: header clean mpimsp o4i dfn mpimsp_test o4i_test dfn_test all_test all_prod all help download
@@ -73,13 +73,13 @@ else
 endif
 
 ### build "batteries included' package?
-ALLINC ?= false
+ALLINC ?= true
 ALLINC_SEL := "[true] [false]"
 AFX := $(firstword $(ALLINC))
 AFY := $(shell echo $(AFX) | tr A-Z a-z)
 AFZ := $(findstring [$(AFY)],$(ALLINC_SEL))
 ifeq (,$(AFZ))
-	ALLINCLUSIVE := false
+	ALLINCLUSIVE := true
 else
 	ALLINCLUSIVE := $(AFY)
 endif
@@ -298,7 +298,7 @@ copy_from_src:	build_dirs build_md5
 	@cp -upr $(SRC_DIR)/CLIENT_DATA/bin  $(BUILD_DIR)/CLIENT_DATA/
 	@cp -upr $(SRC_DIR)/CLIENT_DATA/*.opsiscript  $(BUILD_DIR)/CLIENT_DATA/
 	@cp -upr $(SRC_DIR)/CLIENT_DATA/*.opsiinc     $(BUILD_DIR)/CLIENT_DATA/
-	# @cp -upr $(SRC_DIR)/CLIENT_DATA/*.opsifunc    $(BUILD_DIR)/CLIENT_DATA/
+	@cp -upr $(SRC_DIR)/CLIENT_DATA/*.opsifunc    $(BUILD_DIR)/CLIENT_DATA/
 	@$(eval NUM_FILES := $(shell ls -l $(DL_DIR)/$(FILES_MASK) 2>/dev/null | wc -l))
 	@if [ "$(ALLINCLUSIVE)" = "true" ]; then \
 		echo "  * building batteries included package"; \

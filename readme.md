@@ -12,6 +12,7 @@
 * [Installation](#installation)
 * [Properties](#properties)
 * [Allgemeines](#allgemeines)
+  * [Properties](#properties)
   * [Aufbau des Paketes](#paketaufbau)
   * [Nomenklatur](#nomenklatur)
   * [Unattended-Switches](#unattended_switches)
@@ -25,11 +26,10 @@
 
 <div id="paketinfo"></div>
 
-Diese OPSI-Paket fuer **WinSCP** wurde fuer das Repository des *DFN* (*O4I*) und 
+Diese OPSI-Paket fuer **WinSCP** wurde fuer die Repositories des *DFN* (*O4I*) und
 des *Max-Planck-Instituts fuer Mikrostrukturphysik* erstellt.  
-Es wird versucht auf die Besonderheiten der jeweiligen Repositories einzugehen;
-entsprechend werden durch ein einfaches *Makefile* aus den Quellen verschiedene
-Pakete erstellt.
+Die Erstellung der verschiedenen Pakete aus den Quellen erfolgt durch ein
+einfaches *Makefile*.
 
 
 <div id="paket_erstellen"></div>
@@ -94,7 +94,7 @@ der Download der Software beim Erstellen des OPSI-Paketes und nicht erst bei
 dessen Installation:
 > *<code>ALLINC=[true|false]</code>*
 
-Standard ist hier die Erstellung des leichtgewichtigen Paketes (```ALLINC=false```).
+Standard ist hier die Erstellung des vollstaendigen Paketes (```ALLINC=true```).
 
 Bei der Installation des Paketes im Depot wird ein eventuell vorhandenes 
 ```files```-Verzeichnis zunaechst gesichert und vom ```postinst```-Skript
@@ -164,6 +164,22 @@ Installation fehl.
 
 ## Allgemeines ##
 
+<div id="properties"></div>
+
+### Properties ###
+
+Je nach Art des erstellten Paketes und den Einstellungen in der <code>spec.json</code>
+koennen die verfuegbaren Properties abweichen.
+
+| Property | Type | Values | Default  | Multivalue | Editable | Description | Anmerkung |
+|----------|:----:|--------|----------|:----------:|:--------:|-------------|------|
+| custom_post_install | unicode | "none", "custom_test.opsiinc", "post-install.opsiinc" | "none" | False | True | Define filename for include script in custom directory after installation |  |
+| custom_post_uninstall | unicode | "none", "custom_test.opsiinc", "post-uninstall.opsiinc" | "none" | False | True | Define filename for include script in custom directory after deinstallation |  |
+| kill_running | bool |  | False |  |  | kill running instance (for software on_demand) | verfuegbar wenn in spec.json aktiviert |
+| link_desktop | bool |  | False |  |  | generate or delete desktop link | |
+| log_level | unicode | "default", "1", "2", "3", "4", "5", "6", "7", "8", "9" | "default" | False | False | Loglevel for this package |  |
+| silent_option | unicode | "silent", "very silent"| "very silent" | False | False | Show (silent) or hide (very silent) progressbar of (un)installer | |
+
 <div id="aufbau_des_paketes"></div>
 
 ### Aufbau des Paketes ###
@@ -182,7 +198,7 @@ zwangsweise beendet werden.
 * **<code>checkvars.sh</code>** - Hilfsscript fuer die Entwicklung zur Ueberpruefung,
 ob alle verwendeten Variablen deklariert sind bzw. nicht verwendete Variablen
 aufzuspueren.
-* **<code>bin/</code>** - Hilfprogramme; hier: **7zip**, **psdetail**, **GetRealName**.
+* **<code>bin/</code>** - Hilfprogramme; hier: **psdetail**, **GetRealName**.
 * **<code>images/</code>** - Programmbilder fuer OPSI
 
 <div id="nomenklatur"></div>
@@ -190,7 +206,7 @@ aufzuspueren.
 ### Nomenklatur ###
 Praefixes in der Produkt-Id definieren die Art des Paketes:
 
-* **0_** - Es handelt sich um ein Test-Paket. Beim Uebergang zur Produktions-Release
+* **0_**, **test_** - Es handelt sich um ein Test-Paket. Beim Uebergang zur Produktions-Release
 wird der Praefix entfernt.
 * **o4i_** - Das Paket ist zur Verwendung im Opsi4Institutes-Repository vorgesehen.
 * **dfn_** - Das Paket ist zur Verwendung im DFN-Repository vorgesehen. (identisch mit o4i)
@@ -277,7 +293,7 @@ Alle Risiken des Softwareeinsatzes liegen beim Nutzer.
 <div id="anmerkungen_todo"></div>
 
 ## Anmerkungen/ToDo ##
-* Fuer die OPSI-Pakete wird noch ein ***Lizenzmodell*** benoetigt.
+[...]
 
 -----
-Jens Boettge <<boettge@mpi-halle.mpg.de>>, 2019-03-20 10:51:32 +0100
+Jens Boettge <<boettge@mpi-halle.mpg.de>>, 2019-07-22 11:56:53 +0200

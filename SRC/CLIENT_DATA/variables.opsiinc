@@ -4,14 +4,18 @@
 ; This file contains all possible variables, excluding the opsi-system
 ; variables, for the opsi-winst scripts in use.
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2019-03-11 08:19:09 +0100
+; J. Boettge <boettge@mpi-halle.mpg.de>  2019-07-22 13:46:11 +0200
 ;=====================================================================
 
 DefStringList $MAP$
 DefStringList $ResultList$
 DefStringList $TempList$
 
+DefVar $ActionRequest$
+DefVar $bCheckInstance$
+DefVar $bPSDetail$
 DefVar $CheckBin$
+defVar $CheckProcess$
 DefVar $currentLogLevel$
 DefVar $CustomPostInstall$
 DefVar $CustomPostUninstall$
@@ -19,6 +23,8 @@ DefVar $DisplayName$
 DefVar $ErrorMsg$
 DefVar $ExitCode$
 DefVar $FullProductId$
+DefVar $GETREALNAME$
+DefVar $Img_Config$
 DefVar $Img_Install$
 DefVar $Img_Install_Custom$
 DefVar $Img_Uninstall$
@@ -44,8 +50,11 @@ DefVar $MinimumSpace$
 DefVar $NSIS_Inst_Opts$
 DefVar $NSIS_Uninst_Opts$
 DefVar $NTVersion$
+DefVar $PathToExe$
+DefVar $ProductFilter$
 DefVar $ProductId$
 DefVar $ProductName$
+DefVar $ProductVersionFilter$
 DefVar $RegInno$
 DefVar $RegKey$
 DefVar $RegKeyPath$
@@ -53,8 +62,10 @@ DefVar $RegPathUninstall32$
 DefVar $RegPathUninstall64$
 DefVar $RegProductID$
 DefVar $RegSearchOpts$
+DefVar $result$
 DefVar $SearchPattern$
-DefVar $SEVENZIP$
+; DefVar $SEVENZIP$
+DefVar $Stage$
 DefVar $StrippedProductId$
 DefVar $sw_arch$
 DefVar $SystemType$
@@ -69,6 +80,9 @@ DefVar $Uninst_Log$
 DefVar $Uninst_Opts$
 DefVar $Uninst_Prg$
 DefVar $Uninst_RegDir$
+DefVar $Verbosity$
+DefVar $Verb_INNO$
+DefVar $Verb_MSI$
 DefVar $Version$
 
 DefVar $INNO_Setup_Inf$
@@ -88,11 +102,11 @@ DefVar $MSI_Uninst_Cmd$
 
 ; Properties:
 DefVar $pr_DesktopLink$
+DefVar $pr_silent_option$
 
 ; Variables for checkinstance:
 DefVar $Proc_Cnt$
 DefVar $Proc_Killed$
 DefVar $PSDETAIL$
-DefVar $PSDETAIL_mod$
-DefVar $PSDETAIL_opr$
+DefVar $PSDETAIL_MODE$
 DefVar $Kill_Running$

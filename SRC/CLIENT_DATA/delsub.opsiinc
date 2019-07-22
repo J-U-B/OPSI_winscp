@@ -2,7 +2,7 @@
 ; delsub.opsiinc WinSCP
 ; Uninstaller type: INNO or MSI
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2019-03-20 12:55:49 +0100
+; J. Boettge <boettge@mpi-halle.mpg.de>  2019-07-22 13:53:12 +0200
 ;=====================================================================
 
 
@@ -15,6 +15,7 @@ marktime
 
 if FileExists("%ScriptPath%\checkinstance.opsiinc")
 	include_append "%ScriptPath%\checkinstance.opsiinc"
+	sub_checkinstance_init
 else
 	isFatalError "File not found: checkinstance.opsiinc"
 endif
@@ -23,9 +24,11 @@ endif
 ;=== check for running binaries
 ;... look for ANY running winscp process
 ; ...(normally we are only searching for exactly the processes we want to uninstall)
-set $MainBin$ = $CheckBin$
-set $PSDETAIL_mod$ = "-n"
-sub_checkinstance
+if $bCheckInstance$ = "true"
+	set $CheckProcess$ = $CheckBin$
+	set $PSDETAIL_MODE$ = "name"
+	sub_checkinstance
+endif
 
 
 ;=== get list of UninstIDs from registry:
@@ -52,15 +55,17 @@ if not ( count ($ResultList$) = "0" )
 			ShowBitmap $Img_Uninstall$ $ProductName$
 		endif
 	endif	
-	
-	;=== measure time
-	set $TimeDiff$ = getDiffTimeSec
-	Message  "Removal time: " + $TimeDiff$ + " seconds"	
-	
 else
 	comment "Empty result list while searching for " + $ProductName$ + " in registry - does not seem to be installed"
 endif	
 
+;=== update productOnClient information on depot server
+Message "Updating status information on depot"
+set $result$ = removeProductVerOnClientStatus($ProductFilter$, $ProductVersionFilter$)
+
+;=== measure time
+set $TimeDiff$ = getDiffTimeSec
+Message  "Removal time: " + $TimeDiff$ + " seconds"
 
 
 
@@ -149,8 +154,8 @@ sub_check_PathVar
 
 ;=== check for running binaries
 ;...the application:
-;set $MainBin$ = $Uninst_RegDir$ + $CheckBin$
-;set $PSDETAIL_mod$ = ""
+;set $CheckProcess$ = $Uninst_RegDir$ + $CheckBin$
+;set $PSDETAIL_MODE$ = ""
 ;=== skip checking here since WinSCP does'nt install if ANY winscp-process is running
 ;sub_checkinstance
 
@@ -167,7 +172,7 @@ if ($ExitCode$ = "0") and not ($Uninst_RegDir$ = "")
 		sleepSeconds 2
 		;=== does the installation directory still exist?
 		if (FileExists($Inst_Loc$))
-			logWarning "Install directory still exists: [" + $Inst_Loc$ + "]"
+			comment "INFO: Install directory still exists: [" + $Inst_Loc$ + "]. Trying to delete."
 			;=== try final cleanup
 			Files_del_InstallDir
 		endif
@@ -184,7 +189,8 @@ $UninstallString$  $Uninst_Opts$
 ;======================================================================
 [Files_del_InstallDir]
 ;======================================================================
-delete -sfc "$Uninst_RegDir$"
+;delete -sfc "$Uninst_RegDir$"
+delete -sfc "$Inst_Loc$"
 
 
 ;=====================================================================
