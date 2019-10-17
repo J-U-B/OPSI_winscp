@@ -1,8 +1,12 @@
+winscp 5.15.5-3:
+	* product update ==> 5.15.5
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2019-10-17 08:18:09 +0200
+		
 winscp 5.15.3-3:
 	* product update ==> 5.15.3
 	* pystache: use UTF-8 encoding
 	* Makefile: new default for ALLINC is true
-	* added helpers.opsifunc to v1.4
+	* added helpers.opsifunc v1.4
 	* update status information for other packages providing the same product on depot
 	* deferring action if running instance is found (no success/error, keep action_request unchanged)
 	* added property "silent_option"

@@ -1,10 +1,10 @@
 {  
 	"_": "=== OPSI package variables ===",
 	"O_PKG_VER"         : "3",
-	"O_SOFTWARE_VER"    : "5.15.3",
+	"O_SOFTWARE_VER"    : "5.15.5",
 	"O_SOFTWARE"        : "WinSCP",
 	"O_SOFTWARE_WEBSITE": "https://winscp.net",
-	"O_SOFTWARE_CHANGES": "https://winscp.net/eng/docs/history#5.15.3",
+	"O_SOFTWARE_CHANGES": "https://winscp.net/eng/docs/history#5.15.5",
 	"O_RELEASE_DATE"    : "{{M_TODAY}}",
 	"O_INST_LOG"        : "/tmp/{{M_ORGPREFIX}}winscp__opsi_package_install.log",
 	
