@@ -1,3 +1,8 @@
+winscp 5.15.9-4:
+	* product update ==> 5.15.9
+	* update helpers.opsifunc -> v1.5
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2019-12-06 11:10:24 +0100
+	
 winscp 5.15.7-3:
 	* product update ==> 5.15.7
 	-- J. Boettge <boettge@mpi-halle.mpg.de>  2019-11-28 07:24:33 +0100
