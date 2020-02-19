@@ -1,7 +1,7 @@
 {  
 	"_": "=== OPSI package variables ===",
-	"O_PKG_VER"         : "4",
-	"O_SOFTWARE_VER"    : "5.15.9",
+	"O_PKG_VER"         : "5",
+	"O_SOFTWARE_VER"    : "5.17",
 	"O_SOFTWARE"        : "WinSCP",
 	"O_SOFTWARE_WEBSITE": "https://winscp.net",
 	"O_SOFTWARE_CHANGES": "https://winscp.net/eng/docs/history#5.15.9",

@@ -1,3 +1,9 @@
+winscp 5.17-5:
+	* product update ==> 5.17
+	* product_downloader: modified detection of curl/wget
+	* Makefile: handling of default values made more comfortable
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2020-02-19 07:22:32 +0100
+
 winscp 5.15.9-4:
 	* product update ==> 5.15.9
 	* update helpers.opsifunc -> v1.5
