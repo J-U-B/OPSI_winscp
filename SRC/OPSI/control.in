@@ -106,9 +106,9 @@ default: ["default"]
 
 
 [Changelog]
-{{! The changelog is outsourced  to a separate file in the root of this project. }}
-{{! It will be included on building the OPSI package. }}
-
+{{! The changelog is outsourced to a separate file in the root of this project.  }}
+{{! Depending on the setting in the Makefile it will be included on building the }}
+{{! OPSI package or kept in a separate file in this directory. }}
 
 
 

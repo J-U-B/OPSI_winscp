@@ -4,7 +4,7 @@
 ; This file contains all possible variables, excluding the opsi-system
 ; variables, for the opsi-winst scripts in use.
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2019-07-22 13:46:11 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2020-04-25 11:36:34 +0200
 ;=====================================================================
 
 DefStringList $MAP$
@@ -50,6 +50,7 @@ DefVar $MinimumSpace$
 DefVar $NSIS_Inst_Opts$
 DefVar $NSIS_Uninst_Opts$
 DefVar $NTVersion$
+DefVar $OS$
 DefVar $PathToExe$
 DefVar $ProductFilter$
 DefVar $ProductId$
