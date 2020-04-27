@@ -1,8 +1,8 @@
 ############################################################
 # OPSI package Makefile (WinSCP)
-# Version: 2.8.0
+# Version: 2.8.1
 # Jens Boettge <boettge@mpi-halle.mpg.de>
-# 2020-04-25 11:52:01 +0200
+# 2020-04-27 19:57:03 +0200
 ############################################################
 
 .PHONY: header clean mpimsp o4i dfn mpimsp_test o4i_test dfn_test all_test all_prod all help download
@@ -375,10 +375,10 @@ build: download clean copy_from_src
 		${PYSTACHE} $(SRC_DIR)/OPSI/$$F.in $(BUILD_JSON) > $(BUILD_DIR)/OPSI/$$F; \
 	done
 
-	for E in txt md pdf; do \
-		if [ -e readme.$$E ]; then \
-			echo "Copying additional file: readme.$$E"; \
-			cp -f readme.$$E $(BUILD_DIR)/OPSI/; \
+	for E in readme.txt readme.md readme.pdf changelog.md changelog.pdf; do \
+		if [ -e $$E ]; then \
+			echo "Copying additional file: $$E"; \
+			cp -f $$E $(BUILD_DIR)/OPSI/; \
 		fi; \
 	done	
 	

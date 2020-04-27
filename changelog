@@ -1,3 +1,10 @@
+winscp 5.17.5-5:
+	* product update ==> 5.17.5
+	* Makefile: also copy optional files changelog.[md|pdf] (if exists) to OPSI/
+	* added readme.pdf
+	* added .gitattributes
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2020-04-27 20:05:26 +0200
+
 winscp 5.17.4-5:
 	* product update ==> 5.17.4
 	* Makefile: keep changelog optionally in a separate file (changelog.txt)
