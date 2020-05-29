@@ -1,3 +1,7 @@
+winscp 5.17.6-5:
+	* product update ==> 5.17.6
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2020-05-29 10:37:33 +0200
+
 winscp 5.17.5-5:
 	* product update ==> 5.17.5
 	* Makefile: also copy optional files changelog.[md|pdf] (if exists) to OPSI/
