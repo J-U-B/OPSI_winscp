@@ -1,11 +1,11 @@
 ############################################################
 # OPSI package Makefile (WinSCP)
-# Version: 2.8.1
+# Version: 2.9.0
 # Jens Boettge <boettge@mpi-halle.mpg.de>
-# 2020-04-27 19:57:03 +0200
+# 2020-07-27 07:25:46 +0200
 ############################################################
 
-.PHONY: header clean mpimsp o4i dfn mpimsp_test o4i_test dfn_test all_test all_prod all help download
+.PHONY: header clean mpimsp o4i mpimsp_test o4i_test o4i_test_0 o4i_test_noprefix all_test all_prod all help download
 .DEFAULT_GOAL := help
 
 ### defaults:
@@ -179,14 +179,6 @@ o4i: header
 			STAGE="release"  			\
 	build
 
-dfn: header
-	@echo "---------- building DFN package ----------------------------------"
-	@make 	TESTPREFIX=""    			\
-			ORGNAME="DFN"    			\
-			ORGPREFIX="dfn_" 			\
-			STAGE="release"  			\
-	build
-
 mpimsp_test: header
 	@echo "---------- building MPIMSP testing package -----------------------"
 	@make 	TESTPREFIX="0_"	 			\
@@ -219,29 +211,6 @@ o4i_test_noprefix: header
 			STAGE="testing"  			\
 	build	
 
-dfn_test: header
-	@echo "---------- building DFN testing package --------------------------"
-	@make 	TESTPREFIX="test_"  		\
-			ORGNAME="DFN"    			\
-			ORGPREFIX="dfn_" 			\
-			STAGE="testing"  			\
-	build
-
-dfn_test_0: header
-	@echo "---------- building DFN testing package --------------------------"
-	@make 	TESTPREFIX="0_"  			\
-			ORGNAME="DFN"    			\
-			ORGPREFIX="dfn_" 			\
-			STAGE="testing"  			\
-	build
-
-dfn_test_noprefix: header
-	@echo "---------- building DFN testing package --------------------------"
-	@make 	TESTPREFIX=""    			\
-			ORGNAME="DFN"    			\
-			ORGPREFIX="dfn_" 			\
-			STAGE="testing"  			\
-	build
 
 clean_packages: header
 	@echo "---------- cleaning packages, checksums and zsync ----------------"
@@ -265,12 +234,8 @@ help: header
 	@echo "	o4i_test"
 	@echo "	o4i_test_0"
 	@echo "	o4i_test_noprefix"	
-	@echo "	dfn"
-	@echo "	dfn_test"
-	@echo "	dfn_test_0"
-	@echo "	dfn_test_noprefix"
-	@echo "	all_prod   (contains: mpimsp dfn)"
-	@echo "	all_test   (contains: mpimsp_test dfn_test)"
+	@echo "	all_prod   (contains: mpimsp o4i)"
+	@echo "	all_test   (contains: mpimsp_test o4i_test)"
 	@echo "	clean"
 	@echo "	clean_packages"
 	@echo "	fix_rights"
@@ -414,8 +379,8 @@ build: download clean copy_from_src
 	cd $(CURDIR)
 
 
-all_test:  header mpimsp_test dfn_test
+all_test:  header mpimsp_test o4i_test
 
-all_prod : header mpimsp dfn
+all_prod : header mpimsp o4i
 
-all : header mpimsp dfn mpimsp_test dfn_test
+all : header mpimsp o4i mpimsp_test o4i_test
