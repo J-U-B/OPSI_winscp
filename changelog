@@ -1,3 +1,15 @@
+winscp 5.19-8:
+	* product update ==> 5.19
+	* updated helpers.opsiinc -> v1.7
+	* Makefile: new target pdf
+	* switched template engine from pystache to mustache (Go implementation)
+	* added readme.sty
+	* copy changelog and readme.pdf also to CLIENT_DATA
+	* moved unneeded images out of OPSI package to SRC/IMAGES/
+	* updated readme.md (mustache)
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2021-06-18 12:05:31 +0200
+	
+	
 winscp 5.17.10-7:
 	* product update ==> 5.17.10
 	-- J. Boettge <boettge@mpi-halle.mpg.de>  2021-01-26 21:50:50 +0100

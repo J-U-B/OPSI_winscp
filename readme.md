@@ -5,7 +5,7 @@
 * [Paketinfo](#paketinfo)
 * [Paket erstellen](#paket_erstellen)
   * [Makefile und spec.json](#makefile_und_spec)
-  * [pystache](#pystache)
+  * [Mustache](#mustache)
   * [Verzeichnisstruktur](#verzeichnisstruktur)
   * [Makefile-Parameter](#makefile_parameter)
   * [spec.json](#spec_json)
@@ -20,13 +20,13 @@
   * [Dieses Paket](#lic_paket)
   * [WinSCP](#lic_winscp)
   * [psDetail](#lic_psdetail)
-  * [GetRealName](lic_getrealname)
+  * [GetRealName](#lic_getrealname)
 * [Anmerkungen/ToDo](#anmerkungen_todo)
 
 
 <div id="paketinfo"></div>
 
-Diese OPSI-Paket fuer **WinSCP** wurde fuer die Repositories des *DFN* (*O4I*) und
+Diese OPSI-Paket fuer **WinSCP** wurde fuer die Repositories vom OPSI4Institutes (*O4I*) und
 des *Max-Planck-Instituts fuer Mikrostrukturphysik* erstellt.  
 Die Erstellung der verschiedenen Pakete aus den Quellen erfolgt durch ein
 einfaches *Makefile*.
@@ -45,7 +45,7 @@ dem Source-Paket und nicht mit dem OPSI-Paket selbst.
 ### Makefile und spec.json ###
 
 Da aus den Quellen verschiedene Versionen des Paketes mit entsprechenden Anpassungen
-generiert werden sollen (intern, DFN; testing/release) wurde hierfuer ein
+generiert werden sollen (mpimsp, o4i; testing/release) wurde hierfuer ein
 **<code>Makefile</code>** erstellt. Darueber hinaus steuert **<code>spec.json</code>** 
 die Erstellung der Pakete.
 
@@ -59,14 +59,18 @@ hier nicht zum Zuge kommt
 
 <div id="pystache"></div>
 
-### pystache ###
+<div id="mustache"></div>
 
-Als Template-Engine kommt **<code>pystache</code>** zum Einsatz.
-Das entsprechende Paket ist auf dem Build-System aus dem Repository der verwendeten
-Distribution zu installieren.
+### Mustache ###
 
-Unter Debian/Ubuntu erledigt das:
-> <code>sudo apt-get install python-pystache</code>
+Als Template-Engine kommt **Mustache** zum Einsatz.  
+Im Detail wird hier eine Go-Implementierung verwendet. Die Software ist auf 
+[Github](https://github.com/cbroglie/mustache) zu finden. Binaries 
+für Linux und Windows liegen diesem Paket bei.
+
+Das in vorherigen Versionen dieses Paketes (<11) verwendete `pystache` kommt
+nicht mehr zum Einsatz und wurde aus den Quellen entfernt.
+
 
 
 <div id="verzeichnisstruktur"></div>
@@ -92,7 +96,8 @@ ein alternatives Spec--File uebergeben werden:
 Das Paket kann mit *"batteries included"* erstellt werden. In dem Fall erfolgt 
 der Download der Software beim Erstellen des OPSI-Paketes und nicht erst bei
 dessen Installation:
-> *<code>ALLINC=[true|false]</code>*
+
+> *<code>ALLINC=&lt;true|false&gt;</code>*
 
 Standard ist hier die Erstellung des vollstaendigen Paketes (```ALLINC=true```).
 
@@ -101,13 +106,15 @@ Bei der Installation des Paketes im Depot wird ein eventuell vorhandenes
 spaeter wiederhergestellt. Diese Verzeichnis beeinhaltet die eigentlichen
 Installationsfiles. Sollen alte Version aufgehoben werden, kann das ueber
 einen Parameter beeinflusst werden:
-> *<code>KEEPFILES=[true|false]</code>*
+
+> *<code>KEEPFILES=&lt;true|false&gt;</code>*
 
 Standardmaessig sollen die Files geloescht werden.
 
 OPSI erlaubt des Pakete im Format <code>cpio</code> und <code>tar</code> zu erstellen.  
 Als Standard ist <code>cpio</code> festgelegt.  
 Das Makefile erlaubt die Wahl des Formates ueber die Umgebungsvariable bzw. den Parameter:
+
 > *<code>ARCHIVE_FORMAT=&lt;cpio|tar&gt;</code>*
 
 
@@ -171,14 +178,14 @@ Installation fehl.
 Je nach Art des erstellten Paketes und den Einstellungen in der <code>spec.json</code>
 koennen die verfuegbaren Properties abweichen.
 
-| Property | Type | Values | Default  | Multivalue | Editable | Description | Anmerkung |
-|----------|:----:|--------|----------|:----------:|:--------:|-------------|------|
-| custom_post_install | unicode | "none", "custom_test.opsiinc", "post-install.opsiinc" | "none" | False | True | Define filename for include script in custom directory after installation |  |
-| custom_post_uninstall | unicode | "none", "custom_test.opsiinc", "post-uninstall.opsiinc" | "none" | False | True | Define filename for include script in custom directory after deinstallation |  |
-| kill_running | bool |  | False |  |  | kill running instance (for software on_demand) | verfuegbar wenn in spec.json aktiviert |
-| link_desktop | bool |  | False |  |  | generate or delete desktop link | |
-| log_level | unicode | "default", "1", "2", "3", "4", "5", "6", "7", "8", "9" | "default" | False | False | Loglevel for this package |  |
-| silent_option | unicode | "silent", "very silent"| "very silent" | False | False | Show (silent) or hide (very silent) progressbar of (un)installer | |
+| Property                | Default       | Description               |
+|-------------------------|---------------|---------------------------|
+| `custom_post_install`   | "none"        | Define filename for include script in custom directory after installation |  |
+| `custom_post_uninstall` | "none"        | Define filename for include script in custom directory after deinstallation |  |
+| `kill_running`          | False         | kill running instance (for software on_demand); verfuegbar wenn in spec.json aktiviert |
+| `link_desktop`          | False         | generate or delete desktop link | |
+| `log_level`             | "default"     | Loglevel for this package |  |
+| `silent_option`         | "very silent" | Show (silent) or hide (very silent) progressbar of (un)installer | |
 
 <div id="aufbau_des_paketes"></div>
 
@@ -209,7 +216,6 @@ Praefixes in der Produkt-Id definieren die Art des Paketes:
 * **0_**, **test_** - Es handelt sich um ein Test-Paket. Beim Uebergang zur Produktions-Release
 wird der Praefix entfernt.
 * **o4i_** - Das Paket ist zur Verwendung im Opsi4Institutes-Repository vorgesehen.
-* **dfn_** - Das Paket ist zur Verwendung im DFN-Repository vorgesehen. (identisch mit o4i)
 
 Die Reihenfolge der Praefixes ist relevant; die Markierung als Testpaket ist 
 stets fuehrend.
@@ -296,4 +302,4 @@ Alle Risiken des Softwareeinsatzes liegen beim Nutzer.
 [...]
 
 -----
-Jens Boettge <<boettge@mpi-halle.mpg.de>>, 2019-07-22 11:56:53 +0200
+Jens Boettge <<boettge@mpi-halle.mpg.de>>, 2021-06-18 12:05:18 +0200
