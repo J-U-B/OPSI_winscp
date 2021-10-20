@@ -1,6 +1,6 @@
 {{! ========================================================================== }}
 {{!  WinSCP CONTROL                                                            }}
-{{!  J. Boettge <boettge@mpi-halle.mpg.de> 2019-07-22 12:13:54 +0200           }}
+{{!  J. Boettge <boettge@mpi-halle.mpg.de> 2021-10-20 12:05:23 +0200           }}
 {{! ========================================================================== }}
 [Package]
 version: {{O_PKG_VER}}
@@ -56,6 +56,31 @@ default: ["sysnative"]
 ;description: application default language (Currently unused! Set LANG variable for user instead.)
 ;values: ["de_DE", "en_US"]
 ;default: ["en_US"]
+
+[ProductProperty]
+type: unicode
+name: default_interface
+multivalue: False
+editable: False
+description: Default interface style
+values: ["commander", "explorer"]
+default: ["commander"]
+
+[ProductProperty]
+type: unicode
+name: default_updates_period
+multivalue: False
+editable: False
+description: Default update check period
+values: ["never", "daily", "weekly", "monthly"]
+default: ["never"]
+
+[ProductProperty]
+type: bool
+name: install_translations
+description: Install translation files
+  (requires ~55-60 MB disk space)
+default: True
 
 [ProductProperty]
 type: bool

@@ -3,8 +3,8 @@
 # Download files from vendor
 # Product: WinSCP
 #
-# Version 1.5
-# Jens Boettge <boettge@mpi-halle.mpg.de>  2020-02-19 07:18:55 +0100
+# Version 1.5.1
+# Jens Boettge <boettge@mpi-halle.mpg.de>  2021-10-20 07:50:11 +0200
 #=======================================================================
 # link examples:
 #	INNO: (O_DL_EXE_64BIT und O_DL_EXE_32BIT)
@@ -129,7 +129,7 @@ DEST_DIR=${DEST_DIR%\/}
 
 MD5SUMS="${PROD}.md5sums"
 CNT=0
-FS_THRESHOLD=10000
+FS_THRESHOLD=200000
 
 calc_md5()
 {

@@ -1,3 +1,20 @@
+winscp 5.19.3-9:
+	* new properties:
+	  * default_interface
+	  * install_translations
+	  * default_updates_period
+	* using local patched copy of setup config (setup_winscp.inf)
+	  * Dir and Group (no more as parameter)
+	  * select Components (translations)
+	* default config in registry:
+	  * DefaultInterfaceInterface
+	  * DefaultUpdatesPeriod
+	  * DefaultCollectUsage
+	* adjusted FS_THRESHOLD for downloader
+	* adjusted required MinimumSpace
+	* documentation updated (md/pdf)
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2021-10-20 13:46:34 +0200
+
 winscp 5.19.3-8:
 	* product update ==> 5.19.3
 	-- J. Boettge <boettge@mpi-halle.mpg.de>  2021-10-20 07:14:27 +0200

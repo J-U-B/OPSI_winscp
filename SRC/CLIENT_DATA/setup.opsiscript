@@ -2,7 +2,7 @@
 ; setup.ins WinSCP
 ; Installer type: INNO/MSI
 ; 
-; J. Boettge <boettge@mpi-halle.mpg.de>  2021-07-01 06:40:59 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2021-10-20 13:02:39 +0200
 ;======================================================================
 
 ;======================================================================
@@ -56,8 +56,16 @@ else
 	comment "Start " + $InstallerType$ +" setup program"
 	Switch $InstallerType$
 		Case "INNO"
+			Files_copy_inf
+			if fileExists($INNO_Setup_Inf_tmp$)
+				Patches_setup_winscp_inf $INNO_Setup_Inf_tmp$
+			else
+				logError "Required configuration file not found: " + $INNO_Setup_Inf_tmp$
+				isFatalError
+			endif
 			Winbatch_INNO_install
 			Sub_check_exitcode_inno
+			Files_delete_inf
 		EndCase
 		Case "MSI"
 			Winbatch_MSI_install
@@ -96,6 +104,9 @@ else
 		;LinkFolder_create_StartMenuLinks
 	endif
 	
+	;=== Modify default settings
+	Registry_set_defaults /32Bit
+
 	;=== custom post install
 	comment "include custom post install file"
 	if not ($CustomPostInstall$ = "none")
@@ -123,6 +134,31 @@ $Installer$ $INNO_Inst_Opts$
 ;======================================================================
 $MSI_Inst_Cmd$
 
+;======================================================================
+[Patches_setup_winscp_inf]
+;======================================================================
+set [Setup] Dir=$InstallDir$
+set [Setup] Group=$ProductName$
+set [Setup] Components=$Components$
+set [Setup] Tasks=$Tasks$
+
+;======================================================================
+[Registry_set_defaults]
+;=====================================================================
+openkey [HKLM\Software\Martin Prikryl\WinSCP 2]
+set "DefaultInterfaceInterface" = REG_DWORD:$DefaultInterface$
+set "DefaultUpdatesPeriod" = REG_DWORD:$DefaultUpdatesPeriod$
+set "DefaultCollectUsage" = REG_DWORD:0
+
+;======================================================================
+[Files_copy_inf]
+;======================================================================
+copy $INNO_Setup_Inf$ %opsiTmpDir%
+
+;======================================================================
+[Files_delete_inf]
+;======================================================================
+delete -f $INNO_Setup_Inf_tmp$
 
 ;=====================================================================
 [LinkFolder_clear_StartMenuLinks]

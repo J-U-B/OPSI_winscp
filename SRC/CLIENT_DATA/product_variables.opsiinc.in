@@ -1,7 +1,7 @@
 ;=====================================================================
 ; product specific variables WinSCP
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2020-04-25 11:38:53 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2021-10-20 13:03:26 +0200
 ;=====================================================================
 
 include_insert "%ScriptPath%\variables.opsiinc"
@@ -16,7 +16,7 @@ Set $OS$                = GetOS
 ;Set $NTVersion$   		= GetMsVersionInfo
 Set $Stage$				= lower("{{STAGE}}")
 
-requiredWinstVersion >= "4.11.6"
+requiredWinstVersion >= "4.12.0"
 
 ;-----------------------------------------------------------
 ;*** helper functions
@@ -170,8 +170,8 @@ Set $RegPathUninstall32$ 	= "HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\W
 ;-----------------------------------------------------------
 ;*** property: language - "de_DE, "en_US"
 ; application language defined via environment variable LANG
-;-----------------------------------------------------------
 ; ...not yet implemented
+;-----------------------------------------------------------
 ; Set $sw_lang$ 				= GetProductProperty("default_language","en_US")
 
 ;-----------------------------------------------------------
@@ -205,8 +205,11 @@ set $bPSDetail$			= "false"
 ;-----------------------------------------------------------
 ;*** misc settings
 ;-----------------------------------------------------------
-set $Kill_Running$ 			= GetProductProperty("kill_running", "False")
-Set $pr_silent_option$		= GetProductProperty("silent_option","silent")
+set $Kill_Running$              = GetProductProperty("kill_running", "False")
+set $pr_silent_option$          = GetProductProperty("silent_option","silent")
+set $pr_default_interface$      = GetProductProperty("default_interface","commander")
+set $pr_install_translations$   = GetProductProperty("install_translations","true")
+set $pr_default_updates_period$ = GetProductProperty("default_updates_period","never")
 
 ;-----------------------------------------------------------
 ;*** exit code checkers
@@ -238,7 +241,38 @@ Set $Uninst_Log$		= $LogDir$ + "\"+$ProductId$+"_uninstall.log"
 Set $InstallDir$      	= $InstallBase$ + "\" + $ProductName$ + "\"
 ;Set $InstallDir$      	= $InstallBase$ + "\" + $StrippedProductId$ + "\"
 
-Set $MinimumSpace$    	= "50 MB"
+Set $Tasks$=""
+Set $Components$="main,pageant,puttygen"
+
+Switch $pr_default_updates_period$
+	Case "daily"
+		Set $DefaultUpdatesperiod$ = "1"
+	EndCase
+	Case "weekly"
+		Set $DefaultUpdatesperiod$ = "7"
+	EndCase
+	Case "monthly"
+		Set $DefaultUpdatesperiod$ = "30"
+	EndCase
+	DefaultCase
+		Set $DefaultUpdatesperiod$ = "0"
+	EndCase
+EndSwitch
+
+if $pr_install_translations$ = "true"
+	Set $MinimumSpace$    	= "110 MB"
+	Set $Components$        = $Components$ + ",transl"
+else
+	Set $MinimumSpace$    	= "50 MB"
+endif
+
+if $pr_default_interface$ = "explorer"
+	set $DefaultInterface$ = "1"
+else
+	; commander
+	set $DefaultInterface$ = "0"
+endif
+
 ;Set $CheckBin$       	= $StrippedProductId$ + ".exe"
 Set $CheckBin$       	= "winscp.exe"
 Set $PathToExe$			= $InstallDir$ + $CheckBin$
@@ -298,14 +332,16 @@ EndSwitch
 Switch $InstallerType$
 Case "INNO"
 	;============= INNO =============
-	; Set $Installer$			= "%ScriptPath%\files\" + $ProductName$ + "-{{O_SOFTWARE_VER}}-x" + $sw_arch$ + ".exe"
-	Set $Installer$			= "%ScriptPath%\files\" + $ProductName$ + "-{{O_SOFTWARE_VER}}-Setup.exe"
-	Set $INNO_Setup_Inf$	= "%ScriptPath%\files\setup_winscp.inf"
-	Set $INNO_Inst_Opts$    = '/SP- ' + $Verbosity$ + ' /NOCANCEL /NORESTART /CLOSEAPPLICATIONS /SUPPRESSMSGBOXES /LANG=english /DIR="' + $InstallDir$ +'" /GROUP="' + $ProductName$ +'" /LOADINF="+ $INNO_Setup_Inf$ +" /LOG="'+ $Inst_Log$ +'"'
+	; Set $Installer$		 = "%ScriptPath%\files\" + $ProductName$ + "-{{O_SOFTWARE_VER}}-x" + $sw_arch$ + ".exe"
+	Set $Installer$			 = "%ScriptPath%\files\" + $ProductName$ + "-{{O_SOFTWARE_VER}}-Setup.exe"
+	Set $INNO_Setup_Inf$	 = "%ScriptPath%\setup_winscp.inf"
+	Set $INNO_Setup_Inf_tmp$ = "%opsiTmpDir%\setup_winscp.inf"
+	;Set $INNO_Inst_Opts$     = '/SP- ' + $Verbosity$ + ' /NOCANCEL /NORESTART /CLOSEAPPLICATIONS /SUPPRESSMSGBOXES /LANG=en /DIR="' + $InstallDir$ +'" /GROUP="' + $ProductName$ +'" /LOADINF="' + $INNO_Setup_Inf_tmp$ + '" /LOG="'+ $Inst_Log$ +'"'
+	Set $INNO_Inst_Opts$     = '/SP- ' + $Verbosity$ + ' /NOCANCEL /NORESTART /CLOSEAPPLICATIONS /SUPPRESSMSGBOXES /LANG=en /LOADINF="'+ $INNO_Setup_Inf_tmp$ + '" /LOG="'+ $Inst_Log$ +'"'
 EndCase	
 Case "MSI"
 	;============= MSI ==============
-	; Set $Installer$			= "%ScriptPath%\files\" + $ProductName$ + "-{{O_SOFTWARE_VER}}-x" + $sw_arch$ + ".msi"
+	; Set $Installer$		= "%ScriptPath%\files\" + $ProductName$ + "-{{O_SOFTWARE_VER}}-x" + $sw_arch$ + ".msi"
 	Set $Installer$			= "%ScriptPath%\files\" + $ProductName$ + "-{{O_SOFTWARE_VER}}.msi"
 	Set $MSI_Inst_Opts$ 	= $Verbosity$ + ' /norestart /l+* "' + $Inst_Log$ +'" INSTALLDIR="' + $InstallDir$ + '" REBOOT=ReallySuppress ALLUSERS=1'
 	Set $MSI_Inst_Cmd$		= 'msiexec /i "' + $Installer$ +'" ' + $MSI_Inst_Opts$

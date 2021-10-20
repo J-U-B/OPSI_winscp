@@ -4,7 +4,7 @@
 ; This file contains all possible variables, excluding the opsi-system
 ; variables, for the opsi-winst scripts in use.
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2020-04-25 11:36:34 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2021-10-20 12:00:07 +0200
 ;=====================================================================
 
 DefStringList $MAP$
@@ -15,10 +15,13 @@ DefVar $ActionRequest$
 DefVar $bCheckInstance$
 DefVar $bPSDetail$
 DefVar $CheckBin$
-defVar $CheckProcess$
+DefVar $CheckProcess$
+DefVar $Components$
 DefVar $currentLogLevel$
 DefVar $CustomPostInstall$
 DefVar $CustomPostUninstall$
+DefVar $DefaultInterface$
+DefVar $DefaultUpdatesPeriod$
 DefVar $DisplayName$
 DefVar $ErrorMsg$
 DefVar $ExitCode$
@@ -70,6 +73,7 @@ DefVar $Stage$
 DefVar $StrippedProductId$
 DefVar $sw_arch$
 DefVar $SystemType$
+defVar $Tasks$
 DefVar $Testing$
 DefVar $TimeDiff$
 DefVar $Uninstaller$
@@ -87,6 +91,7 @@ DefVar $Verb_MSI$
 DefVar $Version$
 
 DefVar $INNO_Setup_Inf$
+DefVar $INNO_Setup_Inf_tmp$
 DefVar $INNO_Inst_Opts$
 DefVar $INNO_Uninst_Opts$
 
@@ -102,7 +107,10 @@ DefVar $MSI_Uninst_Cmd$
 
 
 ; Properties:
+DefVar $pr_default_interface$
+DefVar $pr_default_updates_period$
 DefVar $pr_DesktopLink$
+DefVar $pr_install_translations$
 DefVar $pr_silent_option$
 
 ; Variables for checkinstance:

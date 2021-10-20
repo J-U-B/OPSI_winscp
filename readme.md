@@ -178,14 +178,17 @@ Installation fehl.
 Je nach Art des erstellten Paketes und den Einstellungen in der <code>spec.json</code>
 koennen die verfuegbaren Properties abweichen.
 
-| Property                | Default       | Description               |
-|-------------------------|---------------|---------------------------|
-| `custom_post_install`   | "none"        | Define filename for include script in custom directory after installation |  |
-| `custom_post_uninstall` | "none"        | Define filename for include script in custom directory after deinstallation |  |
-| `kill_running`          | False         | kill running instance (for software on_demand); verfuegbar wenn in spec.json aktiviert |
-| `link_desktop`          | False         | generate or delete desktop link | |
-| `log_level`             | "default"     | Loglevel for this package |  |
-| `silent_option`         | "very silent" | Show (silent) or hide (very silent) progressbar of (un)installer | |
+| Property                 | Default       | Description               |
+|--------------------------|---------------|---------------------------|
+| `custom_post_install`    | "none"        | Define filename for include script in custom directory after installation |
+| `custom_post_uninstall`  | "none"        | Define filename for include script in custom directory after deinstallation |
+| `kill_running`           | False         | kill running instance (for software on_demand); verfuegbar wenn in spec.json aktiviert |
+| `default_interface`      | "commander"   | Default interface style (*commander* or *explorer*) |
+| `install_translations`   | True          | Install translation files; requires ~55-60 MB disk space |
+| `default_updates_period` | "never"       | Default update check period
+| `link_desktop`           | False         | generate or delete desktop link |
+| `log_level`              | "default"     | Loglevel for this package |
+| `silent_option`          | "very silent" | Show (silent) or hide (very silent) progressbar of (un)installer |
 
 <div id="aufbau_des_paketes"></div>
 
@@ -302,4 +305,4 @@ Alle Risiken des Softwareeinsatzes liegen beim Nutzer.
 [...]
 
 -----
-Jens Boettge <<boettge@mpi-halle.mpg.de>>, 2021-06-18 12:05:18 +0200
+Jens Boettge <<boettge@mpi-halle.mpg.de>>, 2021-10-20 12:07:06 +0200
