@@ -1,3 +1,14 @@
+winscp 5.19.3-10:
+	* renamed properties:
+	  * default_interface -> config_interface_style
+	  * default_updates_period -> config_updates_period
+	* new properties:
+	  * configure_user_settgins
+	  * config_interface_theme
+	* modified handling of (user) configuration settings
+	* documentation updated (md/pdf)
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2021-10-22 21:52:03 +0200
+
 winscp 5.19.3-9:
 	* new properties:
 	  * default_interface

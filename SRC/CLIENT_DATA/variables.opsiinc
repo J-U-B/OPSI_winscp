@@ -4,7 +4,7 @@
 ; This file contains all possible variables, excluding the opsi-system
 ; variables, for the opsi-winst scripts in use.
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2021-10-20 12:00:07 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2021-10-22 08:23:06 +0200
 ;=====================================================================
 
 DefStringList $MAP$
@@ -14,14 +14,15 @@ DefStringList $TempList$
 DefVar $ActionRequest$
 DefVar $bCheckInstance$
 DefVar $bPSDetail$
+DefVar $cfg_InterfaceStyle$
+DefVar $cfg_InterfaceTheme$
+DefVar $cfg_UpdatesPeriod$
 DefVar $CheckBin$
 DefVar $CheckProcess$
 DefVar $Components$
 DefVar $currentLogLevel$
 DefVar $CustomPostInstall$
 DefVar $CustomPostUninstall$
-DefVar $DefaultInterface$
-DefVar $DefaultUpdatesPeriod$
 DefVar $DisplayName$
 DefVar $ErrorMsg$
 DefVar $ExitCode$
@@ -107,11 +108,13 @@ DefVar $MSI_Uninst_Cmd$
 
 
 ; Properties:
-DefVar $pr_default_interface$
-DefVar $pr_default_updates_period$
 DefVar $pr_DesktopLink$
 DefVar $pr_install_translations$
+DefVar $pr_interface_style$
+DefVar $pr_interface_theme$
 DefVar $pr_silent_option$
+DefVar $pr_updates_period$
+DefVar $pr_user_settings$
 
 ; Variables for checkinstance:
 DefVar $Proc_Cnt$

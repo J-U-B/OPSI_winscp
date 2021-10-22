@@ -1,7 +1,7 @@
 ;=====================================================================
 ; product specific variables WinSCP
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2021-10-20 13:03:26 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2021-10-22 10:12:35 +0200
 ;=====================================================================
 
 include_insert "%ScriptPath%\variables.opsiinc"
@@ -172,7 +172,7 @@ Set $RegPathUninstall32$ 	= "HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\W
 ; application language defined via environment variable LANG
 ; ...not yet implemented
 ;-----------------------------------------------------------
-; Set $sw_lang$ 				= GetProductProperty("default_language","en_US")
+; Set $sw_lang$ 			= GetProductProperty("default_language","en_US")
 
 ;-----------------------------------------------------------
 ;*** property: create desktop/startmenu/quickstart link?
@@ -205,11 +205,13 @@ set $bPSDetail$			= "false"
 ;-----------------------------------------------------------
 ;*** misc settings
 ;-----------------------------------------------------------
-set $Kill_Running$              = GetProductProperty("kill_running", "False")
-set $pr_silent_option$          = GetProductProperty("silent_option","silent")
-set $pr_default_interface$      = GetProductProperty("default_interface","commander")
-set $pr_install_translations$   = GetProductProperty("install_translations","true")
-set $pr_default_updates_period$ = GetProductProperty("default_updates_period","never")
+set $Kill_Running$            = GetProductProperty("kill_running", "False")
+set $pr_silent_option$        = GetProductProperty("silent_option","silent")
+set $pr_install_translations$ = GetProductProperty("install_translations","true")
+set $pr_updates_period$       = GetProductProperty("config_updates_period","never")
+set $pr_interface_style$      = GetProductProperty("config_interface_style","do not change")
+set $pr_interface_theme$      = GetProductProperty("config_interface_theme","do not change")
+set $pr_user_settings$        = GetProductProperty("configure_user_settings","false")
 
 ;-----------------------------------------------------------
 ;*** exit code checkers
@@ -244,18 +246,48 @@ Set $InstallDir$      	= $InstallBase$ + "\" + $ProductName$ + "\"
 Set $Tasks$=""
 Set $Components$="main,pageant,puttygen"
 
-Switch $pr_default_updates_period$
+
+Switch $pr_updates_period$
 	Case "daily"
-		Set $DefaultUpdatesperiod$ = "1"
+		Set $cfg_UpdatesPeriod$ = "1"
 	EndCase
 	Case "weekly"
-		Set $DefaultUpdatesperiod$ = "7"
+		Set $cfg_UpdatesPeriod$ = "7"
 	EndCase
 	Case "monthly"
-		Set $DefaultUpdatesperiod$ = "30"
+		Set $cfg_UpdatesPeriod$ = "30"
 	EndCase
 	DefaultCase
-		Set $DefaultUpdatesperiod$ = "0"
+		Set $cfg_UpdatesPeriod$ = "0"
+	EndCase
+EndSwitch
+
+Switch $pr_interface_style$
+	Case "commander"
+		Set $cfg_InterfaceStyle$ = "0"
+	EndCase
+	Case "explorer"
+		Set $cfg_InterfaceStyle$ = "1"
+	EndCase
+	DefaultCase
+		; do not change
+		Set $cfg_InterfaceStyle$ = "false"
+	EndCase
+EndSwitch
+
+Switch $pr_interface_theme$
+	Case "auto"
+		Set $cfg_InterfaceTheme$ = "2"
+	EndCase
+	Case "light"
+		Set $cfg_InterfaceTheme$ = "1"
+	EndCase
+	Case "dark"
+		Set $cfg_InterfaceTheme$ = "0"
+	EndCase
+	DefaultCase
+		; do not change
+		Set $cfg_InterfaceTheme$ = "false"
 	EndCase
 EndSwitch
 
@@ -264,13 +296,6 @@ if $pr_install_translations$ = "true"
 	Set $Components$        = $Components$ + ",transl"
 else
 	Set $MinimumSpace$    	= "50 MB"
-endif
-
-if $pr_default_interface$ = "explorer"
-	set $DefaultInterface$ = "1"
-else
-	; commander
-	set $DefaultInterface$ = "0"
 endif
 
 ;Set $CheckBin$       	= $StrippedProductId$ + ".exe"

@@ -12,8 +12,7 @@
 * [Installation](#installation)
 * [Properties](#properties)
 * [Allgemeines](#allgemeines)
-  * [Properties](#properties)
-  * [Aufbau des Paketes](#paketaufbau)
+  * [Aufbau des Paketes](#aufbau_des_paketes)
   * [Nomenklatur](#nomenklatur)
   * [Unattended-Switches](#unattended_switches)
 * [Lizenzen](#lizenzen)
@@ -70,7 +69,6 @@ für Linux und Windows liegen diesem Paket bei.
 
 Das in vorherigen Versionen dieses Paketes (<11) verwendete `pystache` kommt
 nicht mehr zum Einsatz und wurde aus den Quellen entfernt.
-
 
 
 <div id="verzeichnisstruktur"></div>
@@ -134,15 +132,12 @@ sollen nur noch in <code>spec.json</code> angepasst werden. Den Rest uebernimmt 
 ## Installation ##
 
 Die Software selbst wird - sofern bei der Paketerstellung nicht anders vorgegeben - 
-<u>nicht</u> mit diesem Paket vertrieben. Fuer die *"batteries included"*-Pakete 
-entfaellt dieser Abschnitt.
+mit diesem Paket vertrieben (*"batteries included"*).
 
-Je nach Art des erstellten Paketes erfolgt bei der Installation im Depot durch 
-das <code>postinst</code>-Script der Download der Software vom Hersteller (Windows, 32 und 64 Bit).  
-Ein manueller Download sollte dann nicht erforderlich sein. 
-Auf dem Depot-Server ist **curl** bzw. **wget** erforderlich.
-
-Das Gesamtvolumen der herunterzuladenden Dateien betraegt ca. **10 MByte**.
+Fuer `~dl~-Pakete ist die Software nicht enthalten. Fuer diese Pakete erfolgt
+der Download bei der Installation im Depot durch das postinst-Script vom Hersteller.
+Ein manueller Download ist dann nicht erforderlich. Auf dem Depot-Server ist 
+hierfuer `curl` bzw. `wget` erforderlich.
 
 
 <div id="properties"></div>
@@ -151,44 +146,24 @@ Das Gesamtvolumen der herunterzuladenden Dateien betraegt ca. **10 MByte**.
 
 Die Installation der Software laesst sich ueber eine Reihe von Properties beeinflussen:
 
-* **<code>custom_post_install</code>** - Das hier angegebene OPSI-Script wird
-ins Setup eingebunden und im Anschluss an die Installation ausgefuehrt.
-* **<code>custom_post_uninstall</code>** - Das hier angegebene OPSI-Script wird
-in die Deinstallation eingebunden und im Anschluss ausgefuehrt.
-* **<code>install_architecture</code>** - Hier kann zwischen der 32- und der
-64-Bit-Version der Software gewaehlt werden. Standardmaessig wird die zum 
-Betriebssystem passende Version gewaehlt.
-* **<code>kill_running</code>** - Erfolgt die (De)Installation *on demand* und
-nicht beim Boot/Shutdown, ist es moeglich, dass eine Instanz der Software laueft.
-Hiermit ist es moeglich diese Zwangsweise zu beenden. Andernfalls schlaegt die 
-Installation fehl.
-* **<code>link_desktop</code>** - Ermoeglicht das Anlegen einer Desktopverknuepfung.
-* **<code>log_level</code>** - Setzt einen alternativen Loglevel fuer das Paket. Fuer
-*Releases* ist der Standardwert 5, fuer *Testpakete* 7.
+| Property                            | Default         | Description               |
+|-------------------------------------|-----------------|--------------------------------------------------------------------------------------|
+| `custom_post_install`               | "none"          | Define filename for include script in custom directory after installation |
+| `custom_post_uninstall`             | "none"          | Define filename for include script in custom directory after deinstallation |
+| `kill_running`                      | False           | kill running instance (for software on_demand); verfuegbar wenn in spec.json aktiviert |
+| `install_translations`              | True            | Install translation files; requires ~55-60 MB disk space |
+| `configure_user_settings`           | False           | Modify registry configuration for all users |
+| `config_updates_period`             | "never"         | Update check period (requires user_settgins = true to modify existing user configurations) |
+| `config_interface_style`            | "do not change" | Interface style (*commander* or *explorer*; requires user_settgins = true to modify existing user configurations) |
+| `config_interface_theme`            | "do not change" | Configure interface theme (*auto*, *light*; or *dark*, requires user_settgins = true) |
+| `link_desktop`                      | False           | generate or delete desktop link |
+| `log_level`                         | "default"       | Loglevel for this package |
+| `silent_option`                     | "very silent"   | Show (silent) or hide (very silent) progressbar of (un)installer |
 
 
 <div id="allgemeines"></div>
 
 ## Allgemeines ##
-
-<div id="properties"></div>
-
-### Properties ###
-
-Je nach Art des erstellten Paketes und den Einstellungen in der <code>spec.json</code>
-koennen die verfuegbaren Properties abweichen.
-
-| Property                 | Default       | Description               |
-|--------------------------|---------------|---------------------------|
-| `custom_post_install`    | "none"        | Define filename for include script in custom directory after installation |
-| `custom_post_uninstall`  | "none"        | Define filename for include script in custom directory after deinstallation |
-| `kill_running`           | False         | kill running instance (for software on_demand); verfuegbar wenn in spec.json aktiviert |
-| `default_interface`      | "commander"   | Default interface style (*commander* or *explorer*) |
-| `install_translations`   | True          | Install translation files; requires ~55-60 MB disk space |
-| `default_updates_period` | "never"       | Default update check period
-| `link_desktop`           | False         | generate or delete desktop link |
-| `log_level`              | "default"     | Loglevel for this package |
-| `silent_option`          | "very silent" | Show (silent) or hide (very silent) progressbar of (un)installer |
 
 <div id="aufbau_des_paketes"></div>
 
@@ -305,4 +280,4 @@ Alle Risiken des Softwareeinsatzes liegen beim Nutzer.
 [...]
 
 -----
-Jens Boettge <<boettge@mpi-halle.mpg.de>>, 2021-10-20 12:07:06 +0200
+Jens Boettge <<boettge@mpi-halle.mpg.de>>, 2021-10-22 10:26:03 +0200

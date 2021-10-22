@@ -2,7 +2,7 @@
 ; setup.ins WinSCP
 ; Installer type: INNO/MSI
 ; 
-; J. Boettge <boettge@mpi-halle.mpg.de>  2021-10-20 13:02:39 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2021-10-22 21:47:30 +0200
 ;======================================================================
 
 ;======================================================================
@@ -103,9 +103,21 @@ else
 		LinkFolder_clear_StartMenuLinks
 		;LinkFolder_create_StartMenuLinks
 	endif
-	
-	;=== Modify default settings
+
+	;=== Modify registry settings
 	Registry_set_defaults /32Bit
+	if not($cfg_InterfaceStyle$ = "false")
+		Registry_set_default_interface_style /32Bit
+	endif
+	if $pr_user_settings$ = "true"
+		Registry_alluser_settings /AllNTUserdats /SysNative
+		if not($cfg_InterfaceStyle$="false")
+			Registry_alluser_interface_style /AllNTUserdats /SysNative
+		endif
+		if not($cfg_InterfaceTheme$="false")
+			Registry_alluser_interface_theme /AllNTUserdats /SysNative
+		endif
+	endif
 
 	;=== custom post install
 	comment "include custom post install file"
@@ -142,13 +154,38 @@ set [Setup] Group=$ProductName$
 set [Setup] Components=$Components$
 set [Setup] Tasks=$Tasks$
 
+
 ;======================================================================
 [Registry_set_defaults]
+;======================================================================
+openkey [HKLM\Software\Martin Prikryl\WinSCP 2]
+set "DefaultCollectUsage"  = REG_DWORD:0
+set "DefaultUpdatesPeriod" = REG_DWORD:$cfg_UpdatesPeriod$
+
+;======================================================================
+[Registry_set_default_interface_style]
 ;=====================================================================
 openkey [HKLM\Software\Martin Prikryl\WinSCP 2]
-set "DefaultInterfaceInterface" = REG_DWORD:$DefaultInterface$
-set "DefaultUpdatesPeriod" = REG_DWORD:$DefaultUpdatesPeriod$
-set "DefaultCollectUsage" = REG_DWORD:0
+set "DefaultInterfaceInterface" = REG_DWORD:$cfg_InterfaceStyle$
+
+;======================================================================
+[Registry_alluser_settings]
+;=====================================================================
+openkey [Software\Martin Prikryl\WinSCP 2\Configuration\Interface\Updates]
+set "Period" = REG_DWORD:$cfg_UpdatesPeriod$
+
+;======================================================================
+[Registry_alluser_interface_style]
+;=====================================================================
+openkey [Software\Martin Prikryl\WinSCP 2\Configuration\Interface]
+set "Interface" = REG_DWORD:$cfg_InterfaceStyle$
+
+;======================================================================
+[Registry_alluser_interface_theme]
+;=====================================================================
+openkey [Software\Martin Prikryl\WinSCP 2\Configuration\Interface]
+set "DarkTheme" = REG_DWORD:$cfg_InterfaceTheme$
+
 
 ;======================================================================
 [Files_copy_inf]

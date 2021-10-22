@@ -1,6 +1,6 @@
 {{! ========================================================================== }}
 {{!  WinSCP CONTROL                                                            }}
-{{!  J. Boettge <boettge@mpi-halle.mpg.de> 2021-10-20 12:05:23 +0200           }}
+{{!  J. Boettge <boettge@mpi-halle.mpg.de> 2021-10-22 10:12:05 +0200           }}
 {{! ========================================================================== }}
 [Package]
 version: {{O_PKG_VER}}
@@ -58,22 +58,40 @@ default: ["sysnative"]
 ;default: ["en_US"]
 
 [ProductProperty]
-type: unicode
-name: default_interface
-multivalue: False
-editable: False
-description: Default interface style
-values: ["commander", "explorer"]
-default: ["commander"]
+type: bool
+name: configure_user_settings
+description: Modify registry configuration for all users
+default: False
 
 [ProductProperty]
 type: unicode
-name: default_updates_period
+name: config_updates_period
 multivalue: False
 editable: False
-description: Default update check period
+description: Update check period
+  (requires user_settgngs = true to modify existing user configurations)
 values: ["never", "daily", "weekly", "monthly"]
 default: ["never"]
+
+[ProductProperty]
+type: unicode
+name: config_interface_style
+multivalue: False
+editable: False
+description: Interface style
+  (requires user_settings = true to modify existing user configurations)
+values: ["commander", "explorer", "do not change"]
+default: ["do not change"]
+
+[ProductProperty]
+type: unicode
+name: config_interface_theme
+multivalue: False
+editable: False
+description: Configure interface theme
+  (requires user_settgins = true)
+values: ["auto", "light", "dark", "do not change"]
+default: ["auto"]
 
 [ProductProperty]
 type: bool
