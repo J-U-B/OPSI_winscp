@@ -1,7 +1,7 @@
 ;=====================================================================
 ; product specific variables WinSCP
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2021-10-22 10:12:35 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2021-12-27 06:58:20 +0100
 ;=====================================================================
 
 include_insert "%ScriptPath%\variables.opsiinc"
@@ -224,13 +224,9 @@ include_append "%ScriptPath%\exitcode_msi.opsiinc"
 ;-----------------------------------------------------------
 ;*** logs
 ;-----------------------------------------------------------
-if $isO4I$ = "true"
-	Set $LogDir$		= "%opsiLogDir%"
-else
-	Set $LogDir$		= "%SystemDrive%\tmp"
-endif
-Set $Inst_Log$			= $LogDir$ + "\"+$ProductId$+"_install.log"
-Set $Uninst_Log$		= $LogDir$ + "\"+$ProductId$+"_uninstall.log"
+Set $LogDir$		= "%opsiLogDir%"
+Set $Inst_Log$		= $LogDir$ + "\"+$ProductId$+"_install.log"
+Set $Uninst_Log$	= $LogDir$ + "\"+$ProductId$+"_uninstall.log"
 
 
 ;-----------------------------------------------------------

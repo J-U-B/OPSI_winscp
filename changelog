@@ -1,3 +1,8 @@
+winscp 5.19.5-11:
+	* product update ==> 5.19.5
+	* unified $LogDir$
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2021-12-27 07:00:20 +0100
+
 winscp 5.19.3-10:
 	* renamed properties:
 	  * default_interface -> config_interface_style
