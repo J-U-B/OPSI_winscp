@@ -1,3 +1,7 @@
+winscp 5.19.6-11:
+	* product update ==> 5.19.6
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2022-02-23 08:52:20 +0100
+
 winscp 5.19.5-11:
 	* product update ==> 5.19.5
 	* unified $LogDir$
