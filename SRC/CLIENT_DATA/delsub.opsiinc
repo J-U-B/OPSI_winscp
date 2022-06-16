@@ -222,5 +222,4 @@ else
 	set $Uninst_RegDir$ = stringReplace(lower($Inst_Loc$) + "\", "\\", "\")
 endif
 
-
-
+[EOF_delsub]

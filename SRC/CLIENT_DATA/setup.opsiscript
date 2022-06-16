@@ -120,7 +120,7 @@ else
 	endif
 
 	;=== custom post install
-		if not ($CustomPostInstall$ = "none")
+	if not ($CustomPostInstall$ = "none")
 		if FileExists("%ScriptPath%\custom\" + $CustomPostInstall$)
 			ShowBitmap $Img_Install_Custom$ $ProductName$
 			comment "Starting custom post install"
@@ -249,3 +249,5 @@ set_link
 	icon_file:
 	icon_index:
 end_link
+
+[EOF_setup]
