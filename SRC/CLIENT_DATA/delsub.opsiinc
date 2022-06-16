@@ -2,7 +2,7 @@
 ; delsub.opsiinc WinSCP
 ; Uninstaller type: INNO or MSI
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2019-07-22 13:53:12 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2022-06-16 13:06:10 +0200
 ;=====================================================================
 
 
@@ -20,7 +20,6 @@ else
 	isFatalError "File not found: checkinstance.opsiinc"
 endif
 
-
 ;=== check for running binaries
 ;... look for ANY running winscp process
 ; ...(normally we are only searching for exactly the processes we want to uninstall)
@@ -29,7 +28,6 @@ if $bCheckInstance$ = "true"
 	set $PSDETAIL_MODE$ = "name"
 	sub_checkinstance
 endif
-
 
 ;=== get list of UninstIDs from registry:
 if FileExists("%ScriptPath%\uninst_section_search.opsiinc")
@@ -42,22 +40,26 @@ else
 endif
 
 if not ( count ($ResultList$) = "0" )
-	
+
 	;=== process uninstall for all found uninstall sections:
 	for %id% in $ResultList$ do sub_Uninstall_ID
-	
+
 	;=== custom post uninstall
-	comment "include custom post uninstall file"
 	if not ($CustomPostUninstall$ = "none")
 		if FileExists("%ScriptPath%\custom\" + $CustomPostUninstall$)
 			ShowBitmap $Img_Uninstall_Custom$ $ProductName$
-			include_insert "%ScriptPath%\custom\" + $CustomPostUninstall$
+			comment "Starting custom post uninstall"
+			include_append "%ScriptPath%\custom\" + $CustomPostUninstall$
+			SUB_POST_UNINSTALL
 			ShowBitmap $Img_Uninstall$ $ProductName$
+		else
+			logError "Can't find custom post uninstall script: %ScriptPath%\custom\" + $CustomPostUninstall$
 		endif
-	endif	
+	endif
+
 else
 	comment "Empty result list while searching for " + $ProductName$ + " in registry - does not seem to be installed"
-endif	
+endif
 
 ;=== update productOnClient information on depot server
 Message "Updating status information on depot"

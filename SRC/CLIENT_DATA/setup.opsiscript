@@ -2,7 +2,7 @@
 ; setup.ins WinSCP
 ; Installer type: INNO/MSI
 ; 
-; J. Boettge <boettge@mpi-halle.mpg.de>  2021-10-22 21:47:30 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2022-06-16 13:03:48 +0200
 ;======================================================================
 
 ;======================================================================
@@ -40,19 +40,19 @@ else
 	else
 		logError "Can't find uninstaller script"
 		isFatalError "delsub.opsiinc not found"
-	endif	
-	
+	endif
+
 	; Start the installation
 	ShowBitmap $Img_Install$ $ProductName$
 	Message "Installing " + $ProductName$ + " " + $Version$+ " (" + $sw_arch$ + " bit)"
-	
-	marktime	
-	
+
+	marktime
+
 	if not (FileExists($Installer$))
 		logError "Installer not found: [" + $Installer$ + "]"
 		isFatalError
 	endif
-	
+
 	comment "Start " + $InstallerType$ +" setup program"
 	Switch $InstallerType$
 		Case "INNO"
@@ -77,22 +77,22 @@ else
 		DefaultCase
 			isFatalError "FATAL ERROR: Unknown installer type [" + $InstallerType$ + "]"
 		EndCase
-	EndSwitch			
-	
+	EndSwitch
+
 	set $MainBin$ = $InstallDir$+$CheckBin$
-	
+
 	if not (FileExists($MainBin$))
 		logError "Main binary not found! [" + $MainBin$ + "]"
 		isFatalError
 	endif
-	
+
 	;; the MSI installer creates a desktop link - delete it just in case
 	;if ($InstallerType$ = "MSI")
 		; wait for installer to finish work
 		sleepseconds 1
 		LinkFolder_RemoveDesktopLink
 	;endif
-	
+
 	;=== create desktop link if requested
 	if ($pr_DesktopLink$ = "true")
 		LinkFolder_CreateDesktopLink
@@ -120,22 +120,26 @@ else
 	endif
 
 	;=== custom post install
-	comment "include custom post install file"
-	if not ($CustomPostInstall$ = "none")
+		if not ($CustomPostInstall$ = "none")
 		if FileExists("%ScriptPath%\custom\" + $CustomPostInstall$)
 			ShowBitmap $Img_Install_Custom$ $ProductName$
-			include_insert "%ScriptPath%\custom\" + $CustomPostInstall$
+			comment "Starting custom post install"
+			include_append "%ScriptPath%\custom\" + $CustomPostInstall$
+			SUB_POST_INSTALL
 			ShowBitmap $Img_Install$ $ProductName$
+		else
+			logError "Can't find custom post install script: %ScriptPath%\custom\" + $CustomPostInstall$
+			; isFatalError "delsub.opsiinc not found"
 		endif
 	endif
-	
+
 	;=== measure installation time
 	set $TimeDiff$ = getDiffTimeSec
-	Message  "Setup time: " + $TimeDiff$ + " seconds"	
-	
+	Message  "Setup time: " + $TimeDiff$ + " seconds"
+
 endif
 
- 
+
 ;======================================================================
 [Winbatch_INNO_install]
 ;======================================================================
