@@ -2,7 +2,7 @@
 ; delsub.opsiinc WinSCP
 ; Uninstaller type: INNO or MSI
 ;
-; J. Boettge <boettge@mpi-halle.mpg.de>  2022-06-16 13:06:10 +0200
+; J. Boettge <boettge@mpi-halle.mpg.de>  2022-07-07 10:43:42 +0200
 ;=====================================================================
 
 
@@ -49,8 +49,14 @@ if not ( count ($ResultList$) = "0" )
 		if FileExists("%ScriptPath%\custom\" + $CustomPostUninstall$)
 			ShowBitmap $Img_Uninstall_Custom$ $ProductName$
 			comment "Starting custom post uninstall"
-			include_append "%ScriptPath%\custom\" + $CustomPostUninstall$
-			SUB_POST_UNINSTALL
+			if LineExistsIn("[SUB_POST_INSTALL]", "%ScriptPath%\custom\" + $CustomPostInstall$)
+				include_append "%ScriptPath%\custom\" + $CustomPostUninstall$
+				comment "calling section: SUB_POST_INSTALL"
+				SUB_POST_UNINSTALL
+			else
+				comment "calling section: Sub_UninstallAppendix"
+				Sub_UninstallAppendix
+			endif
 			ShowBitmap $Img_Uninstall$ $ProductName$
 		else
 			logError "Can't find custom post uninstall script: %ScriptPath%\custom\" + $CustomPostUninstall$
@@ -221,5 +227,12 @@ if ($Inst_Loc$ = "")
 else 
 	set $Uninst_RegDir$ = stringReplace(lower($Inst_Loc$) + "\", "\\", "\")
 endif
+
+
+;======================================================================
+[Sub_UninstallAppendix]
+;======================================================================
+include_insert "%ScriptPath%\custom\" + $CustomPostUninstall$
+
 
 [EOF_delsub]

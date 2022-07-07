@@ -1,8 +1,8 @@
 ;======================================================================
 ; setup.ins WinSCP
 ; Installer type: INNO/MSI
-; 
-; J. Boettge <boettge@mpi-halle.mpg.de>  2022-06-16 13:03:48 +0200
+;
+; J. Boettge <boettge@mpi-halle.mpg.de>  2022-07-07 10:41:58 +0200
 ;======================================================================
 
 ;======================================================================
@@ -124,8 +124,14 @@ else
 		if FileExists("%ScriptPath%\custom\" + $CustomPostInstall$)
 			ShowBitmap $Img_Install_Custom$ $ProductName$
 			comment "Starting custom post install"
-			include_append "%ScriptPath%\custom\" + $CustomPostInstall$
-			SUB_POST_INSTALL
+			if LineExistsIn("[SUB_POST_INSTALL]", "%ScriptPath%\custom\" + $CustomPostInstall$)
+				include_append "%ScriptPath%\custom\" + $CustomPostInstall$
+				comment "calling section: SUB_POST_INSTALL"
+				SUB_POST_INSTALL
+			else
+				comment "calling section: Sub_InstallAppendix"
+				Sub_InstallAppendix
+			endif
 			ShowBitmap $Img_Install$ $ProductName$
 		else
 			logError "Can't find custom post install script: %ScriptPath%\custom\" + $CustomPostInstall$
@@ -249,5 +255,12 @@ set_link
 	icon_file:
 	icon_index:
 end_link
+
+
+;=====================================================================
+[Sub_InstallAppendix]
+;=====================================================================
+include_insert "%ScriptPath%\custom\" + $CustomPostInstall$
+
 
 [EOF_setup]
