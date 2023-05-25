@@ -1,6 +1,6 @@
 {{! ========================================================================== }}
 {{!  WinSCP CONTROL                                                            }}
-{{!  J. Boettge <boettge@mpi-halle.mpg.de> 2021-10-22 10:12:05 +0200           }}
+{{!  J. Boettge <boettge@mpi-halle.mpg.de> 2023-05-25 15:17:38 +0200           }}
 {{! ========================================================================== }}
 [Package]
 version: {{O_PKG_VER}}
@@ -11,13 +11,15 @@ incremental: False
 type: localboot
 id: {{TESTPREFIX}}{{ORGPREFIX}}winscp
 name: {{O_SOFTWARE}}
-description: • WinSCP is a popular SFTP client and FTP client for Windows. Supported protocols are FTP, FTPS, SCP, SFTP, WebDAV, S3.
-    • WinSCP ist ein beliebter SFTP-Client und FTP-Client für Windows. Unterstützte Protokolle sind FTP, FTPS, SCP, SFTP, WebDAV, S3.
-    ___
-    Web: {{O_SOFTWARE_WEBSITE}}
+description:
+    • WinSCP is a popular SFTP client and FTP client for Windows. Supported protocols are FTP, FTPS, SCP, SFTP, WebDAV, S3.  
+    • WinSCP ist ein beliebter SFTP-Client und FTP-Client für Windows. Unterstützte Protokolle sind FTP, FTPS, SCP, SFTP, WebDAV, S3.  
+    ___  
+    Web: {{O_SOFTWARE_WEBSITE}}  
     Changelog: {{O_SOFTWARE_CHANGES}}
-advice: Maintainer: Jens Boettge <boettge@mpi-halle.mpg.de>
-    Organization: {{ORGNAME}}
+advice:
+    Maintainer: Jens Boettge <boettge@mpi-halle.mpg.de>  
+    Organization: {{ORGNAME}}  
     Release date: {{O_RELEASE_DATE}}
 version: {{O_SOFTWARE_VER}}
 priority: 0

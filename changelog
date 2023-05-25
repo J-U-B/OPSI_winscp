@@ -1,3 +1,8 @@
+winscp 6.1-17:
+	* product update ==> 6.1
+	* small optimization of control file for rendering of description
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2023-05-25 15:19:40 +0200
+
 winscp 5.21.8-16:
 	* removed deprecated INITIAL section from setup.opsiscript and uninstall.opsiscript
 	* update helpers.opsifunc --> v1.9.1
