@@ -1,3 +1,8 @@
+winscp 6.1.2-18:
+	* product update ==> 6.1.2
+	* new Makefile target 'install' and update help
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2023-09-25 07:42:07 +0200
+
 winscp 6.1.1-17:
 	* product update ==> 6.1.1
 	-- J. Boettge <boettge@mpi-halle.mpg.de>  2023-06-22 15:21:17 +0200

@@ -1,11 +1,11 @@
 ############################################################
 # OPSI package Makefile (WinSCP)
-# Version: 2.10.0
+# Version: 2.11.0
 # Jens Boettge <boettge@mpi-halle.mpg.de>
-# 2021-06-18 11:48:52 +0200
+# 2023-09-25 07:32:39 +0200
 ############################################################
 
-.PHONY: header clean mpimsp o4i mpimsp_test o4i_test o4i_test_0 o4i_test_noprefix all_test all_prod all help download pdf
+.PHONY: header clean mpimsp o4i mpimsp_test o4i_test o4i_test_0 o4i_test_noprefix all_test all_prod all help download pdf install
 .DEFAULT_GOAL := help
 
 ### defaults:
@@ -126,6 +126,13 @@ else
 	BUILD_FORMAT = $(AFY)
 endif
 
+ifeq ($(CUSTOMNAME),"")
+	PKGNAME := ${TESTPREFIX}$(ORGPREFIX)$(PKG_NAME)_${SW_VER}-$(PKG_BUILD)$(CUSTOMNAME)
+else
+	PKGNAME := ${TESTPREFIX}$(ORGPREFIX)$(PKG_NAME)_${SW_VER}-$(PKG_BUILD)~$(CUSTOMNAME)
+endif
+
+
 
 leave_err:
 	exit 1
@@ -244,6 +251,7 @@ help: header
 	@echo "	fix_rights"
 	@echo "	download              - download installation archive(s) from vendor"
 	@echo "	pdf                   - create PDF from readme.md (req. pandoc)"
+	@echo "	install               - install all packages built for current version on depot server"
 	@echo ""
 	@echo "Options:"
 	@echo "	SPEC=<filename>                 (default: $(DEFAULT_SPEC))"
@@ -427,6 +435,9 @@ build: download pdf clean copy_from_src
 		cd "$(CURDIR)/$(PACKAGE_DIR)" && $(OPSI_BUILDER) -F $(BUILD_FORMAT) -k -m $(CURDIR)/$(BUILD_DIR) -c $(CUSTOMNAME); \
 	fi; \
 	cd $(CURDIR)
+	@echo "======================================================================"
+	@echo "Package built: $(PACKAGE_DIR)/$(PKGNAME).opsi"
+	@echo "======================================================================"
 
 
 all_test:  header mpimsp_test o4i_test
@@ -434,3 +445,17 @@ all_test:  header mpimsp_test o4i_test
 all_prod : header mpimsp o4i
 
 all : header mpimsp o4i mpimsp_test o4i_test
+
+
+install:
+	@$(eval PACKAGES_FOUND := $(shell ls -1 $(PACKAGE_DIR)/*.opsi | grep -E "$(PKG_NAME)_$(SW_VER)-$(PKG_BUILD)(~dl){0,1}.opsi$$"))
+	@$(eval PKG_NUM := $(shell echo $(PACKAGES_FOUND) | wc -w))
+	@#echo "[$(PACKAGES_FOUND)]"
+	@echo "Number of installable packages found: $(PKG_NUM)"
+	@if [ $(PKG_NUM) -gt 0 ]; then \
+		for F in $(PACKAGES_FOUND); do \
+			echo -n "* Installing: $$F" ;\
+			opsi-package-manager -q -p package -i $$F ;\
+			echo "\t[$$?]" ;\
+		done ;\
+	fi
