@@ -12,7 +12,7 @@
 DEFAULT_SPEC = spec.json
 DEFAULT_ALLINC = true
 DEFAULT_KEEPFILES = false
-DEFAULT_ARCHIVEFORMAT = cpio
+
 ### to keep the changelog inside the control set CHANGELOG_TGT to an empty string
 ### otherwise the given filename will be used:
 CHANGELOG_TGT = changelog.txt
@@ -31,7 +31,28 @@ ifeq ($(OPSI_BUILDER),)
 		$(error Error: opsi-make(package|productfile) not found!)
 	endif
 endif
-$(info * OPSI_BUILDER = $(OPSI_BUILDER))
+OPSI_VERSION = $(shell $(OPSI_BUILDER) -V | cut -f 1 -d " ")
+$(info * OPSI_BUILDER = $(OPSI_BUILDER) $(OPSI_VERSION))
+O_MAJOR = $(shell echo $(OPSI_VERSION) | cut -f1 -d.)
+O_MINOR = $(shell echo $(OPSI_VERSION) | cut -f2 -d.)
+O_REVNR = $(shell echo $(OPSI_VERSION) | cut -f3 -d.)
+O_VERCL = $(shell echo $$(($(O_MAJOR) * 100 + $(O_MINOR))))
+# $(info * VERCL = $(O_VERCL))
+
+### more defaults, depending on OPSI version:
+ifeq ($(shell test "$(O_VERCL)" -ge "403"; echo $$?),0)
+    $(info * OPSI >=4.3)
+	DEFAULT_ARCHIVEFORMAT = tar
+	ARCHIVE_TYPES :="[tar]"
+	DEFAULT_COMPRESSION = gz
+	COMPRESSION_TYPES :="[gz] [zstd] [bz2]"
+else
+    $(info * OPSI <4.3)
+	DEFAULT_ARCHIVEFORMAT = cpio
+	ARCHIVE_TYPES :="[cpio] [tar]"
+	DEFAULT_COMPRESSION = gzip
+	COMPRESSION_TYPES :="[gzip] [zstd]"
+endif
 
 MUSTACHE = ./SRC/TOOLS/mustache.32
 BUILD_JSON = $(BUILD_DIR)/build.json
@@ -116,14 +137,24 @@ endif
 
 ### Used archive format for OPSI package
 ARCHIVE_FORMAT ?= $(DEFAULT_ARCHIVEFORMAT)
-ARCHIVE_TYPES :="[cpio] [tar]"
 AFX := $(firstword $(ARCHIVE_FORMAT))
 AFY := $(shell echo $(AFX) | tr A-Z a-z)
 
 ifeq (,$(findstring [$(AFY)],$(ARCHIVE_TYPES)))
-	BUILD_FORMAT = cpio
+	BUILD_FORMAT := cpio
 else
-	BUILD_FORMAT = $(AFY)
+	BUILD_FORMAT := $(AFY)
+endif
+
+### Used compression for OPSI package
+COMPRESSION ?= $(DEFAULT_COMPRESSION)
+AFX := $(firstword $(COMPRESSION))
+AFY := $(shell echo $(AFX) | tr A-Z a-z)
+
+ifeq (,$(findstring [$(AFY)],$(COMPRESSION_TYPES)))
+	BUILD_COMPRESSION := $(DEFAULT_COMPRESSION)
+else
+	BUILD_COMPRESSION := $(AFY)
 endif
 
 ifeq ($(CUSTOMNAME),"")
@@ -150,11 +181,14 @@ var_test:
 	@echo "* Custom Name           : [$(CUSTOMNAME)]"
 	@echo "* OPSI Archive Types    : [$(ARCHIVE_TYPES)]"
 	@echo "* OPSI Archive Format   : [$(ARCHIVE_FORMAT)] --> $(BUILD_FORMAT)"
+	@echo "* OPSI Compression Types: [$(COMPRESSION_TYPES)]"
+	@echo "* OPSI Compression      : [$(COMPRESSION)] --> $(BUILD_COMPRESSION)"
 	@echo "* Templates OPSI        : [$(FILES_OPSI_IN)]"
 	@echo "* Templates CLIENT_DATA : [$(FILES_IN)]"
 	@echo "* Files Mask            : [$(FILES_MASK)]"
 	@echo "* Keep files            : [$(KEEPFILES)]"
 	@echo "* Changelog target      : [$(CHANGELOG_TGT)]"
+	@echo "* OPSI Builder Version  : [$(OPSI_VERSION)]"
 	@echo "=================================================================="
 	@echo "* Installer files in $(DL_DIR):"
 	@for F in `ls -1 $(DL_DIR)/$(FILES_MASK) | sed -re 's/.*\/(.*)$$/\1/' `; do echo "    $$F"; done 
@@ -225,17 +259,17 @@ o4i_test_noprefix: header
 clean_packages: header
 	@echo "---------- cleaning packages, checksums and zsync ----------------"
 	@rm -f $(PACKAGE_DIR)/*.md5 $(PACKAGE_DIR)/*.opsi $(PACKAGE_DIR)/*.zsync
-	
+
 clean: header
 	@echo "---------- cleaning  build directory & downloader-----------------"
 	@rm -rf $(BUILD_DIR)	
 	@rm -f product_downloader.sh
-	
-	
+
+
 realclean: header clean
 	@echo "---------- cleaning download directory ---------------------------"
 	@rm -rf $(DL_DIR)
-		
+
 help: header
 	@echo "Valid targets: "
 	@echo "	mpimsp"
@@ -248,7 +282,7 @@ help: header
 	@echo "	all_test   (contains: mpimsp_test o4i_test)"
 	@echo "	clean"
 	@echo "	clean_packages"
-	@echo "	fix_rights"
+	@echo "	fix_rights            - fix rights for package directory"
 	@echo "	download              - download installation archive(s) from vendor"
 	@echo "	pdf                   - create PDF from readme.md (req. pandoc)"
 	@echo "	install               - install all packages built for current version on depot server"
@@ -261,7 +295,13 @@ help: header
 	@echo "	KEEPFILES=[true|false]          (default: $(DEFAULT_KEEPFILES))"
 	@echo "			Keep really all previous files from files?"
 	@echo "			If false only files matching this package version are kept."
-	@echo "	ARCHIVE_FORMAT=[cpio|tar]       (default: $(DEFAULT_ARCHIVEFORMAT))"
+	@if [ $(O_VERCL) -ge 403 ]; then \
+	 echo "	ARCHIVE_FORMAT=[cpio|tar]       (default: $(DEFAULT_ARCHIVEFORMAT))"; \
+	 echo "	COMPRESSION=[gz|zstd|bz2]       (default: $(DEFAULT_COMPRESSION))"; \
+	else \
+	 echo "	ARCHIVE_FORMAT=[tar]            (default: $(DEFAULT_ARCHIVEFORMAT))"; \
+	 echo "	COMPRESSION=[gzip|zstd]         (default: $(DEFAULT_COMPRESSION))"; \
+    fi
 	@echo ""
 
 pdf:
@@ -310,7 +350,7 @@ build_md5:
 	fi
 	#@echo grep -i "$(GREP_MASK)" $(DL_DIR)/$(MD5SUM_FILE)>> $(BUILD_DIR)/CLIENT_DATA/$(MD5SUM_FILE) 
 	@grep -Pi "$(GREP_MASK)" $(DL_DIR)/$(MD5SUM_FILE)>> $(BUILD_DIR)/CLIENT_DATA/$(MD5SUM_FILE) 
-	
+
 
 copy_from_src:	build_dirs build_md5
 	@echo "* Copying files"
@@ -383,11 +423,11 @@ download: build_json
 		if [ ! -d "$(DL_DIR)" ]; then mkdir -p "$(DL_DIR)"; fi ;\
 		DEST_DIR=$(DL_DIR) $(DOWNLOAD_SH) ;\
 	fi
-	
-	
+
+
 build: download pdf clean copy_from_src
 	@make build_json
-	
+
 	for F in $(FILES_OPSI_IN); do \
 		echo "* Creating OPSI/$$F"; \
 		rm -f $(BUILD_DIR)/OPSI/$$F; \
@@ -400,7 +440,7 @@ build: download pdf clean copy_from_src
 			cp -f $$E $(BUILD_DIR)/OPSI/; \
 		fi; \
 	done
-	
+
 	if [ -e $(BUILD_DIR)/OPSI/control -a -e changelog ]; then \
 		if [ -n "$(CHANGELOG_TGT)" ]; then \
 			echo "* Using separate CHANGELOG file."; \
@@ -411,7 +451,7 @@ build: download pdf clean copy_from_src
 			cat changelog >> $(BUILD_DIR)/OPSI/control; \
 		fi; \
 	fi
-	
+
 	for F in $(FILES_IN); do \
 		echo "* Creating CLIENT_DATA/$$F"; \
 		rm -f $(BUILD_DIR)/CLIENT_DATA/$$F; \

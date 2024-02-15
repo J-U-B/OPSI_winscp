@@ -1,3 +1,8 @@
+winscp 6.3-19:
+	* product update ==> 6.3
+	* refined Makefile for OPSI 4.3 (handle compression)
+	-- J. Boettge <boettge@mpi-halle.mpg.de>  2024-02-15 07:55:52 +0100
+
 winscp 6.1.2-18:
 	* product update ==> 6.1.2
 	* new Makefile target 'install' and update help
